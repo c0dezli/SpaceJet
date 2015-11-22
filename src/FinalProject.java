@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-public class game implements Runnable {
+public class FinalProject implements Runnable {
 
    final int WIDTH = 800;
    final int HEIGHT = 680;
@@ -17,7 +17,7 @@ public class game implements Runnable {
    Canvas canvas;
    BufferStrategy bufferStrategy;
    
-   public game() {
+   public FinalProject() {
       frame = new JFrame("Running Man");
       
       JPanel panel = (JPanel) frame.getContentPane();
@@ -111,7 +111,7 @@ public class game implements Runnable {
    }
    
    public static void main(String [] args){
-      game ex = new game();
+      FinalProject ex = new FinalProject();
       new Thread(ex).start();
    }
 
