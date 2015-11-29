@@ -41,7 +41,7 @@ public class Board extends JPanel implements Runnable, Settings {
 
         addKeyListener(new TAdapter());
         setFocusable(true);
-        d = new Dimension(BOARD_WIDTH, BOARD_HEIGTH);
+        d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
         setBackground(Color.black);
 
         gameInit();
@@ -59,8 +59,8 @@ public class Board extends JPanel implements Runnable, Settings {
 
         ImageIcon ii = new ImageIcon(this.getClass().getResource(alienpix));
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 6; j++) {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 8; j++) {
                 Alien alien = new Alien(alienX + 18 * j, alienY + 18 * i);
                 alien.setImage(ii.getImage());
                 aliens.add(alien);
@@ -149,7 +149,7 @@ public class Board extends JPanel implements Runnable, Settings {
         Graphics g = this.getGraphics();
 
         g.setColor(Color.black);
-        g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGTH);
+        g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
 
         g.setColor(new Color(0, 32, 48));
         g.fillRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
