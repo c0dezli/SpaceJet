@@ -14,7 +14,7 @@ public class Alien extends Sprite {
         // Randomly choose the position alien appear
         Random pos = new Random();
         this.x = pos.nextInt(600);
-        this.y = 0;
+        this.y = 20;
 
         // Draw the alien
         ImageIcon icon = new ImageIcon(this.getClass().getResource(alien));

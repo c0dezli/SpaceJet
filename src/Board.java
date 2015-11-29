@@ -16,6 +16,7 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import java.util.*;
 
 
 public class Board extends JPanel implements Runnable, Settings {
@@ -37,6 +38,8 @@ public class Board extends JPanel implements Runnable, Settings {
     private String message = "Game Over";
 
     private Thread animator;
+    private String a;
+
 
 
     public Board() {
@@ -116,6 +119,7 @@ public class Board extends JPanel implements Runnable, Settings {
         if (player.isDying()) {
             player.die();
             ingame = false;
+
         }
     }
 
@@ -154,6 +158,7 @@ public class Board extends JPanel implements Runnable, Settings {
 
         if (ingame) {
 
+            g.drawLine(0, UPBOUND, BOARD_WIDTH, UPBOUND);
             g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
             drawAliens(g);
             drawPlayer(g);
@@ -380,5 +385,4 @@ public class Board extends JPanel implements Runnable, Settings {
             }
         }
     }
-
 }

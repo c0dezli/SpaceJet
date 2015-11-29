@@ -8,7 +8,7 @@ public interface Settings {
     int BOARD_WIDTH = 600;
     int BOARD_HEIGHT = 900;
     int GROUND = 780;
-
+    int UPBOUND = 20;
     int BOMB_HEIGHT = 5;
     int ALIEN_HEIGHT = 12;
     int ALIEN_WIDTH = 12;
