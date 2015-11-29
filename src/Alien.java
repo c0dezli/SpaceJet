@@ -9,17 +9,23 @@ public class Alien extends Sprite {
 
     private Bomb bomb;
     private final String alien = "spacepix/alien.png";
+    private final String alien2 = "spacepix/alien2.png";
+    private final String expl = "spacepix/explosion.png";
 
     public Alien() {
         // Randomly choose the position alien appear
-        Random pos = new Random();
-        this.x = pos.nextInt(600);
+        Random gen = new Random();
+        this.x = gen.nextInt(550);
         this.y = 20;
 
         // Draw the alien
-        ImageIcon icon = new ImageIcon(this.getClass().getResource(alien));
-        setImage(icon.getImage());
-
+        if (gen.nextInt(10) % 2 == 0) {
+            ImageIcon icon = new ImageIcon(this.getClass().getResource(alien));
+            setImage(icon.getImage());
+        } else {
+            ImageIcon icon = new ImageIcon(this.getClass().getResource(alien2));
+            setImage(icon.getImage());
+        }
         // Load the BOMB!
         bomb = new Bomb(this.x, this.y);
     }
@@ -32,6 +38,11 @@ public class Alien extends Sprite {
         return bomb;
     }
 
+    public void die() {
+        ImageIcon icon = new ImageIcon(this.getClass().getResource(expl));
+        setImage(icon.getImage());
+        super.die();
+    }
 
     public class Bomb extends Sprite {
 

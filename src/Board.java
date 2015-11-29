@@ -33,10 +33,8 @@ public class Board extends JPanel implements Runnable, Settings {
     private boolean ingame = true;
     private String message = "Game Over";
     private final String expl = "spacepix/explosion.png";
-
+    final long startTime = System.currentTimeMillis();
     private Thread animator;
-    private String a;
-
 
 
     public Board() {
@@ -86,11 +84,12 @@ public class Board extends JPanel implements Runnable, Settings {
     }
     public void drawHeart(Graphics g) {
         for (int i=0; i<=player.getHP();i++){
-            g.drawImage(hearts.getImage(), hearts.getX()+(i*15), hearts.getY(), this);
+            g.drawImage(hearts.getImage(), hearts.getX()+(i*hearts.getWidth()), hearts.getY(), this);
         }
 
 
     }
+
     public void drawPlayer(Graphics g) {
 
         if (player.isVisible()) {
@@ -114,7 +113,7 @@ public class Board extends JPanel implements Runnable, Settings {
 
     }
 
-    public void  drawScore(Graphics g) {
+    public void drawScore(Graphics g) {
         g.drawString("Score: "+ score, 100, 10);
     }
 
@@ -176,12 +175,9 @@ public class Board extends JPanel implements Runnable, Settings {
         // game reset
     }
 
-    public void animationCycle(long timeDiff) {
-
+    public void animationCycle() {
         // player
         player.move();
-        score += (int) timeDiff/1000;
-
         // player's shot
         for (Iterator i = shots.iterator(); i.hasNext();) {
             Shot shot = (Shot) i.next();
@@ -224,31 +220,17 @@ public class Board extends JPanel implements Runnable, Settings {
             }
         }
 
-        // aliens
-        for (Iterator i = aliens.iterator();i.hasNext();) {
-            Alien a1 = (Alien) i.next();
-            int x = a1.getX();
+        // random generator for generate aliens and bombs
+        Random generator = new Random();
 
-            if (x >= BOARD_WIDTH - BORDER_RIGHT && direction != -1) {
-                direction = -1;
-                Iterator i1 = aliens.iterator();
-                while (i1.hasNext()) {
-                    Alien a2 = (Alien) i1.next();
-                    a2.setY(a2.getY() + GO_DOWN);
-                }
-            }
-
-            if (x <= BORDER_LEFT && direction != 1) {
-                direction = 1;
-
-                Iterator i2 = aliens.iterator();
-                while (i2.hasNext()) {
-                    Alien a = (Alien) i2.next();
-                    a.setY(a.getY() + GO_DOWN);
-                }
-            }
+        if((startTime - System.currentTimeMillis()) % 50 == 0) {
+            Alien alien1 = new Alien();
+            aliens.add(alien1);
         }
 
+
+
+        // check if the alien reached the ground
         for (Iterator i = aliens.iterator(); i.hasNext();) {
             Alien alien = (Alien) i.next();
             if (alien.isVisible()) {
@@ -256,9 +238,14 @@ public class Board extends JPanel implements Runnable, Settings {
                 int y = alien.getY();
 
                 if (y > GROUND - ALIEN_HEIGHT) {
-                    ingame = false;
-                    message = "Invasion!";
-                    // game reset
+                    ImageIcon icon = new ImageIcon(getClass().getResource(expl));
+                    alien.setImage(icon.getImage());
+                    alien.setDying(true);
+                    if (player.getHP() == 0){
+                        player.setDying(true);
+                    } else {
+                        player = new Player(player.getHP() - 1);
+                    }
                 }
 
                 alien.move(direction);
@@ -267,7 +254,6 @@ public class Board extends JPanel implements Runnable, Settings {
 
         // aliens' bomb
 
-        Random generator = new Random();
         for (Iterator i = aliens.iterator(); i.hasNext();) {
             int shot = generator.nextInt(15);
             Alien a = (Alien) i.next();
@@ -289,8 +275,8 @@ public class Board extends JPanel implements Runnable, Settings {
                         bombX <= (playerX + PLAYER_WIDTH) &&
                         bombY >= (playerY) &&
                         bombY <= (playerY + PLAYER_HEIGHT)) {
-                    ImageIcon ii = new ImageIcon(this.getClass().getResource(expl));
-                    player.setImage(ii.getImage());
+                    ImageIcon icon = new ImageIcon(this.getClass().getResource(expl));
+                    player.setImage(icon.getImage());
                     if (player.getHP() == 0){
                         player.setDying(true);
                     } else {
@@ -315,11 +301,10 @@ public class Board extends JPanel implements Runnable, Settings {
         beforeTime = System.currentTimeMillis();
 
         while (ingame) {
-            timeDiff = System.currentTimeMillis() - beforeTime;
-
             repaint();
-            animationCycle(timeDiff);
+            animationCycle();
 
+            timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = DELAY - timeDiff;
 
             if (sleep < 0)
