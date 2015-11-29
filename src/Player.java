@@ -18,9 +18,7 @@ public class Player extends Sprite implements Settings{
     public int score;
 
     public Player(int HP) {
-
         ImageIcon icon = new ImageIcon(this.getClass().getResource(player));
-
         width = icon.getImage().getWidth(null);
         height = icon.getImage().getHeight(null);
         score = 0;
@@ -63,7 +61,6 @@ public class Player extends Sprite implements Settings{
         {
             dx = 2;
         }
-
         if (key == KeyEvent.VK_UP)
         {
             dy = -2;
@@ -87,7 +84,6 @@ public class Player extends Sprite implements Settings{
         {
             dx = 0;
         }
-
         if (key == KeyEvent.VK_UP)
         {
             dy = 0;

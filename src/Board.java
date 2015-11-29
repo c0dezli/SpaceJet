@@ -24,6 +24,7 @@ public class Board extends JPanel implements Runnable, Settings {
     private ArrayList aliens;
     private Player player;
     private ArrayList shots;
+    private HP hearts;
 
     private int alienX = 150;
     private int alienY = 5;
@@ -32,9 +33,11 @@ public class Board extends JPanel implements Runnable, Settings {
     private boolean ingame = true;
     private final String expl = "spacepix/explosion.png";
     private final String alienpix = "spacepix/alien.png";
+    private final String heart = "spacepix/Pixel_heart_icon.png";
     private String message = "Game Over";
 
     private Thread animator;
+
 
     public Board() {
 
@@ -61,11 +64,20 @@ public class Board extends JPanel implements Runnable, Settings {
         Alien alien = new Alien();
         alien.setImage(icon.getImage());
         aliens.add(alien);
-
+        
+        ImageIcon iii = new ImageIcon(this.getClass().getResource(heart));
 
         player = new Player(PLAYER_HP);
+
         shots = new ArrayList();
         //shot = new Shot();
+
+        hearts = new HP(PLAYER_HEARTS);
+        hearts.setImage(iii.getImage());
+
+
+
+
 
         if (animator == null || !ingame) {
             animator = new Thread(this);
@@ -88,7 +100,13 @@ public class Board extends JPanel implements Runnable, Settings {
             }
         }
     }
+    public void drawHeart(Graphics g) {
+        for (int i=0; i<=player.getHP();i++){
+            g.drawImage(hearts.getImage(), hearts.getX()+(i*15), hearts.getY(), this);
+        }
 
+
+    }
     public void drawPlayer(Graphics g) {
 
         if (player.isVisible()) {
@@ -141,6 +159,10 @@ public class Board extends JPanel implements Runnable, Settings {
             drawPlayer(g);
             drawShot(g);
             drawBombing(g);
+            drawHeart(g);
+
+
+
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -166,8 +188,8 @@ public class Board extends JPanel implements Runnable, Settings {
         g.setFont(small);
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2,
                 BOARD_WIDTH / 2);
+        // game reset
     }
-
 
     public void animationCycle(long timeDiff) {
 
@@ -258,6 +280,7 @@ public class Board extends JPanel implements Runnable, Settings {
                 if (y > GROUND - ALIEN_HEIGHT) {
                     ingame = false;
                     message = "Invasion!";
+                    // game reset
                 }
 
                 alien.move(direction);
@@ -357,4 +380,5 @@ public class Board extends JPanel implements Runnable, Settings {
             }
         }
     }
+
 }

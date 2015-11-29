@@ -4,9 +4,11 @@
 //package final_project;
 
 public interface Settings {
+
     int BOARD_WIDTH = 600;
     int BOARD_HEIGHT = 900;
     int GROUND = 780;
+
     int BOMB_HEIGHT = 5;
     int ALIEN_HEIGHT = 12;
     int ALIEN_WIDTH = 12;
@@ -19,4 +21,5 @@ public interface Settings {
     int PLAYER_WIDTH = 15;
     int PLAYER_HEIGHT = 10;
     int PLAYER_HP = 2;
+    int PLAYER_HEARTS = 3;
 }
