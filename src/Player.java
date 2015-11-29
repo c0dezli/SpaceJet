@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 
 public class Player extends Sprite implements Settings{
 
-    private final int START_Y = 280;
+    private final int START_Y = 770;
     private final int START_X = 270;
 
     private final String player = "spacepix/player.png";
@@ -36,8 +36,8 @@ public class Player extends Sprite implements Settings{
             x = BOARD_WIDTH - 2*width;
         if (y <= 2)
             y = 2;
-        if (y >= BOARD_HEIGHT - 2*height)
-            y = BOARD_HEIGHT - 2*height;
+        if (y >= GROUND - 2*height)
+            y = GROUND - 2*height;
     }
 
     public void keyPressed(KeyEvent e) {

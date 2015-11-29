@@ -4,16 +4,16 @@
 //package final_project;
 
 public interface Settings {
-    int BOARD_WIDTH = 800;
-    int BOARD_HEIGHT = 600;
-    int GROUND = 290;
+    int BOARD_WIDTH = 600;
+    int BOARD_HEIGHT = 900;
+    int GROUND = 780;
     int BOMB_HEIGHT = 5;
     int ALIEN_HEIGHT = 12;
     int ALIEN_WIDTH = 12;
     int BORDER_RIGHT = 30;
     int BORDER_LEFT = 5;
     int GO_DOWN = 15;
-    int NUMBER_OF_ALIENS_TO_DESTROY = 24;
+    int NUMBER_OF_ALIENS_TO_DESTROY = 40;
     int CHANCE = 5;
     int DELAY = 17;
     int PLAYER_WIDTH = 15;
