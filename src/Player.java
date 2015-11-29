@@ -15,13 +15,11 @@ public class Player extends Sprite implements Settings{
     private int width;
     private int height;
     private int HP;
-    public int score;
 
     public Player(int HP) {
         ImageIcon icon = new ImageIcon(this.getClass().getResource(player));
         width = icon.getImage().getWidth(null);
         height = icon.getImage().getHeight(null);
-        score = 0;
         setHP(HP);
         setImage(icon.getImage());
         setX(START_X);
