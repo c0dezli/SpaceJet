@@ -54,17 +54,17 @@ public class Board extends JPanel implements Runnable, Settings {
     }
 
     public void gameInit() {
-
+        long tStart = System.currentTimeMillis();
         aliens = new ArrayList();
 
-        ImageIcon ii = new ImageIcon(this.getClass().getResource(alienpix));
-        for (int i = 0; i < 5; i++) {
+        ImageIcon icon = new ImageIcon(this.getClass().getResource(alienpix));
 
-                Alien alien = new Alien();
-                alien.setImage(ii.getImage());
-                aliens.add(alien);
+        Alien alien = new Alien();
+        alien.setImage(icon.getImage());
+        aliens.add(alien);
 
-        }
+
+
 
         player = new Player(PLAYER_HP);
         shot = new Shot();
@@ -164,7 +164,8 @@ public class Board extends JPanel implements Runnable, Settings {
                 BOARD_WIDTH / 2);
     }
 
-    public void animationCycle() {
+
+    public void animationCycle(long timeDiff) {
 
         if (deaths == NUMBER_OF_ALIENS_TO_DESTROY) {
             ingame = false;
@@ -301,16 +302,16 @@ public class Board extends JPanel implements Runnable, Settings {
     }
 
     public void run() {
-
         long beforeTime, timeDiff, sleep;
 
         beforeTime = System.currentTimeMillis();
 
         while (ingame) {
-            repaint();
-            animationCycle();
-
             timeDiff = System.currentTimeMillis() - beforeTime;
+
+            repaint();
+            animationCycle(timeDiff);
+
             sleep = DELAY - timeDiff;
 
             if (sleep < 0)

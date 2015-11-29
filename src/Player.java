@@ -14,17 +14,18 @@ public class Player extends Sprite implements Settings{
     private final String player = "spacepix/player.png";
     private int width;
     private int height;
-    private int HP ;
+    private int HP;
+    public int score;
 
     public Player(int HP) {
 
-        ImageIcon ii = new ImageIcon(this.getClass().getResource(player));
+        ImageIcon icon = new ImageIcon(this.getClass().getResource(player));
 
-        width = ii.getImage().getWidth(null);
-        height = ii.getImage().getHeight(null);
-
+        width = icon.getImage().getWidth(null);
+        height = icon.getImage().getHeight(null);
+        score = 0;
         setHP(HP);
-        setImage(ii.getImage());
+        setImage(icon.getImage());
         setX(START_X);
         setY(START_Y);
     }
