@@ -14,8 +14,8 @@ public class Alien extends Sprite {
         this.y = y;
 
         bomb = new Bomb(x, y);
-        ImageIcon ii = new ImageIcon(this.getClass().getResource(shot));
-        setImage(ii.getImage());
+        ImageIcon icon = new ImageIcon(this.getClass().getResource(shot));
+        setImage(icon.getImage());
 
     }
 
@@ -36,8 +36,8 @@ public class Alien extends Sprite {
             setDestroyed(true);
             this.x = x;
             this.y = y;
-            ImageIcon ii = new ImageIcon(this.getClass().getResource(bomb));
-            setImage(ii.getImage());
+            ImageIcon icon = new ImageIcon(this.getClass().getResource(bomb));
+            setImage(icon.getImage());
         }
 
         public void setDestroyed(boolean destroyed) {
