@@ -23,12 +23,11 @@ public class Board extends JPanel implements Runnable, Settings {
     private Dimension d;
     private ArrayList aliens;
     private Player player;
-    private Shot shot;
+    private ArrayList shots;
 
     private int alienX = 150;
     private int alienY = 5;
     private int direction = -1;
-    private int deaths = 0;
 
     private boolean ingame = true;
     private final String expl = "spacepix/explosion.png";
@@ -64,10 +63,9 @@ public class Board extends JPanel implements Runnable, Settings {
         aliens.add(alien);
 
 
-
-
         player = new Player(PLAYER_HP);
-        shot = new Shot();
+        shots = new ArrayList();
+        //shot = new Shot();
 
         if (animator == null || !ingame) {
             animator = new Thread(this);
@@ -104,8 +102,14 @@ public class Board extends JPanel implements Runnable, Settings {
     }
 
     public void drawShot(Graphics g) {
-        if (shot.isVisible())
-            g.drawImage(shot.getImage(), shot.getX(), shot.getY(), this);
+        Iterator it = shots.iterator();
+        while (it.hasNext()){
+            Shot shot = (Shot) it.next();
+
+            if(shot.isVisible())
+                g.drawImage(shot.getImage(), shot.getX(), shot.getY(), this);
+        }
+
     }
 
     public void drawBombing(Graphics g) {
@@ -167,46 +171,51 @@ public class Board extends JPanel implements Runnable, Settings {
 
     public void animationCycle(long timeDiff) {
 
-        if (deaths == NUMBER_OF_ALIENS_TO_DESTROY) {
-            ingame = false;
-            message = "Game won!";
-        }
-
         // player
 
         player.move();
+        // player.score = (int) timeDiff/10000;
 
-        // shot
-        if (shot.isVisible()) {
-            Iterator it = aliens.iterator();
-            int shotX = shot.getX();
-            int shotY = shot.getY();
+        // player's shot
+        for (Iterator i = shots.iterator(); i.hasNext();) {
+            Shot shot = (Shot) i.next();
+            if (shot.isVisible()) {
+                Iterator it = aliens.iterator();
+                int shotX = shot.getX();
+                int shotY = shot.getY();
 
-            while (it.hasNext()) {
-                Alien alien = (Alien) it.next();
-                int alienX = alien.getX();
-                int alienY = alien.getY();
+                while (it.hasNext()) {
+                    Alien alien = (Alien) it.next();
+                    int alienX = alien.getX();
+                    int alienY = alien.getY();
 
-                if (alien.isVisible() && shot.isVisible()) {
-                    if (shotX >= (alienX) &&
-                            shotX <= (alienX + ALIEN_WIDTH) &&
-                            shotY >= (alienY) &&
-                            shotY <= (alienY + ALIEN_HEIGHT)) {
-                        ImageIcon ii =
-                                new ImageIcon(getClass().getResource(expl));
-                        alien.setImage(ii.getImage());
-                        alien.setDying(true);
-                        deaths++;
-                        shot.die();
+                    if (alien.isVisible() && shot.isVisible()) {
+                        // if you shot the alien
+                        if (shotX >= (alienX) &&
+                                shotX <= (alienX + ALIEN_WIDTH) &&
+                                shotY >= (alienY) &&
+                                shotY <= (alienY + ALIEN_HEIGHT)) {
+                            // kill the alien
+                            ImageIcon icon = new ImageIcon(getClass().getResource(expl));
+                            alien.setImage(icon.getImage());
+                            alien.setDying(true);
+                            // add score
+                            player.score += 100;
+                            // reset the player's shot
+                            shot.die();
+                        }
                     }
                 }
-            }
 
-            int y = shot.getY();
-            y -= 4;
-            if (y < 0)
-                shot.die();
-            else shot.setY(y);
+                // shot move
+                int y = shot.getY();
+                y -= 4;
+
+                // if shot move to the upper bound, reset it
+                if (y < 0)
+                    shot.die();
+                else shot.setY(y);
+            }
         }
 
         // aliens
@@ -255,7 +264,7 @@ public class Board extends JPanel implements Runnable, Settings {
             }
         }
 
-        // bombs
+        // aliens' bomb
 
         Iterator i3 = aliens.iterator();
         Random generator = new Random();
@@ -341,8 +350,9 @@ public class Board extends JPanel implements Runnable, Settings {
 
             if (ingame) {
                 if (e.isAltDown()) {
-                    if (!shot.isVisible())
-                        shot = new Shot(x, y);
+                    Shot shot = new Shot(x, y);
+                    shots.add(shot);
+
                 }
             }
         }
