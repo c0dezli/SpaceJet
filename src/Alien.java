@@ -8,20 +8,20 @@ import java.util.Random;
 public class Alien extends Sprite {
 
     private Bomb bomb;
-    private final String shot = "spacepix/alien.png";
+    private final String alien = "spacepix/alien.png";
 
-    public Alien(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Alien() {
+        // Randomly choose the position alien appear
+        Random pos = new Random();
+        this.x = pos.nextInt(600);
+        this.y = 0;
 
-        bomb = new Bomb(x, y);
-        ImageIcon icon = new ImageIcon(this.getClass().getResource(shot));
+        // Draw the alien
+        ImageIcon icon = new ImageIcon(this.getClass().getResource(alien));
         setImage(icon.getImage());
 
-    }
-
-    public void generate(int direction) {
-
+        // Load the BOMB!
+        bomb = new Bomb(this.x, this.y);
     }
 
     public void move(int direction) {
