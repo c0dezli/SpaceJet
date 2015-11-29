@@ -59,15 +59,14 @@ public class Board extends JPanel implements Runnable, Settings {
 
         ImageIcon ii = new ImageIcon(this.getClass().getResource(alienpix));
         for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 8; j++) {
 
                 Alien alien = new Alien();
                 alien.setImage(ii.getImage());
                 aliens.add(alien);
-            }
+
         }
 
-        player = new Player();
+        player = new Player(PLAYER_HP);
         shot = new Shot();
 
         if (animator == null || !ingame) {
@@ -286,8 +285,7 @@ public class Board extends JPanel implements Runnable, Settings {
                     if (player.getHP() == 0){
                         player.setDying(true);
                     } else {
-                        player.setHP(player.getHP() - 1);
-                        player = new Player();
+                        player = new Player(player.getHP() - 1);
                     }
                     b.setDestroyed(true);
                 }
