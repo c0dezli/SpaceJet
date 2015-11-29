@@ -14,6 +14,7 @@ public class Player extends Sprite implements Settings{
     private final String player = "spacepix/player.png";
     private int width;
     private int height;
+    private int HP;
 
     public Player() {
 
@@ -27,7 +28,15 @@ public class Player extends Sprite implements Settings{
         setY(START_Y);
     }
 
-    public void act() {
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int n) {
+        HP = n;
+    }
+
+    public void move() {
         x += dx;
         y += dy;
         if (x <= 2)

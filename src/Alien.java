@@ -2,6 +2,7 @@
  * Created by SteveLeeLX on 11/28/15.
  */
 import javax.swing.ImageIcon;
+import java.util.Random;
 
 
 public class Alien extends Sprite {
@@ -19,13 +20,18 @@ public class Alien extends Sprite {
 
     }
 
-    public void act(int direction) {
-        this.x += direction;
+    public void generate(int direction) {
+
+    }
+
+    public void move(int direction) {
+        this.y -= direction;
     }
 
     public Bomb getBomb() {
         return bomb;
     }
+
 
     public class Bomb extends Sprite {
 

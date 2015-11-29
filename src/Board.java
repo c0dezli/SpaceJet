@@ -58,9 +58,9 @@ public class Board extends JPanel implements Runnable, Settings {
         aliens = new ArrayList();
 
         ImageIcon ii = new ImageIcon(this.getClass().getResource(alienpix));
-
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 8; j++) {
+
                 Alien alien = new Alien(alienX + 18 * j, alienY + 18 * i);
                 alien.setImage(ii.getImage());
                 aliens.add(alien);
@@ -174,7 +174,7 @@ public class Board extends JPanel implements Runnable, Settings {
 
         // player
 
-        player.act();
+        player.move();
 
         // shot
         if (shot.isVisible()) {
@@ -251,7 +251,7 @@ public class Board extends JPanel implements Runnable, Settings {
                     message = "Invasion!";
                 }
 
-                alien.act(direction);
+                alien.move(direction);
             }
         }
 
