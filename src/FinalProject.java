@@ -109,10 +109,5 @@ public class FinalProject implements Runnable {
    protected void render(Graphics2D g) {
       g.fillRect((int)x, 0, 200, 200);
    }
-   
-   public static void main(String [] args){
-      FinalProject ex = new FinalProject();
-      new Thread(ex).start();
-   }
 
 }
