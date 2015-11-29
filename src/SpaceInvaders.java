@@ -11,7 +11,6 @@ public class SpaceInvaders extends JFrame implements Settings {
     {
 
         add(new Board());
-
         setTitle("Space Invaders");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(BOARD_WIDTH, BOARD_HEIGHT);

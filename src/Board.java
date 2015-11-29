@@ -1,14 +1,8 @@
 /**
  * Created by SteveLeeLX on 11/28/15.
  */
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Toolkit;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,13 +12,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import java.util.*;
 
-
 public class Board extends JPanel implements Runnable, Settings {
 
     private Dimension d;
     private ArrayList aliens;
-    private Player player;
     private ArrayList shots;
+    private Player player;
     private HP hearts;
 
     private int direction = -1;
@@ -33,9 +26,7 @@ public class Board extends JPanel implements Runnable, Settings {
     private boolean ingame = true;
     private String message = "Game Over";
     private final String expl = "spacepix/explosion.png";
-    final long startTime = System.currentTimeMillis();
     private Thread animator;
-
 
     public Board() {
 
@@ -55,9 +46,6 @@ public class Board extends JPanel implements Runnable, Settings {
 
     public void gameInit() {
         aliens = new ArrayList();
-        Alien alien = new Alien();
-        aliens.add(alien);
-
         player = new Player(PLAYER_HP);
         shots = new ArrayList();
         hearts = new HP(PLAYER_HEARTS);
@@ -82,6 +70,7 @@ public class Board extends JPanel implements Runnable, Settings {
             }
         }
     }
+
     public void drawHeart(Graphics g) {
         for (int i=0; i<=player.getHP();i++){
             g.drawImage(hearts.getImage(), hearts.getX()+(i*hearts.getWidth()), hearts.getY(), this);
@@ -101,6 +90,27 @@ public class Board extends JPanel implements Runnable, Settings {
             ingame = false;
 
         }
+    }
+
+    public void drawMenu(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        Font fnt0 = new Font("arial", Font.BOLD, 50);
+        g.setFont(fnt0);
+        g.setColor(Color.white);
+        g.drawString("Earth Protector", Board.WIDTH / 2 + 100, 110);
+
+        Font fnt1 = new Font("arial", Font.BOLD, 30);
+        g.setFont(fnt1);
+
+        Rectangle play = new Rectangle(Board.WIDTH /2 + 250, 250, 100, 45);
+        Rectangle score = new Rectangle(Board.WIDTH /2 + 250, 350, 100, 45);
+        Rectangle exit = new Rectangle(Board.WIDTH /2 + 250, 450, 100, 45);
+        g2d.draw(play);
+        g.drawString("Play", play.x + 19, play.y + 30);
+        g2d.draw(score);
+        g.drawString("Score", score.x + 19, score.y + 30);
+        g2d.draw(exit);
+        g.drawString("Exit", exit.x + 19, exit.y + 30);
     }
 
     public void drawShot(Graphics g) {
@@ -135,9 +145,7 @@ public class Board extends JPanel implements Runnable, Settings {
         g.setColor(Color.black);
         g.fillRect(0, 0, d.width, d.height);
         g.setColor(Color.green);
-
         if (ingame) {
-
             g.drawLine(0, UPBOUND, BOARD_WIDTH, UPBOUND);
             g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
             drawAliens(g);
@@ -146,11 +154,11 @@ public class Board extends JPanel implements Runnable, Settings {
             drawBombing(g);
             drawHeart(g);
             drawScore(g);
-
+            Toolkit.getDefaultToolkit().sync();
+            g.dispose();
+        } else {
+            drawMenu(g);
         }
-
-        Toolkit.getDefaultToolkit().sync();
-        g.dispose();
     }
 
     public void gameOver() {
@@ -223,7 +231,7 @@ public class Board extends JPanel implements Runnable, Settings {
         // random generator for generate aliens and bombs
         Random generator = new Random();
 
-        if((startTime - System.currentTimeMillis()) % 50 == 0) {
+        if((System.currentTimeMillis()) % 50 == 0) {
             Alien alien1 = new Alien();
             aliens.add(alien1);
         }
@@ -300,8 +308,9 @@ public class Board extends JPanel implements Runnable, Settings {
 
         beforeTime = System.currentTimeMillis();
 
+        repaint();
+
         while (ingame) {
-            repaint();
             animationCycle();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
@@ -326,19 +335,24 @@ public class Board extends JPanel implements Runnable, Settings {
         }
 
         public void keyPressed(KeyEvent e) {
+            if (e.isShiftDown()){
+                ingame = true;
+            }
+            if (ingame){
+                player.keyPressed(e);
 
-            player.keyPressed(e);
+                int x = player.getX();
+                int y = player.getY();
 
-            int x = player.getX();
-            int y = player.getY();
-
-            if (ingame) {
                 if (e.isAltDown()) {
                     Shot shot = new Shot(x, y);
                     shots.add(shot);
 
                 }
+            } else {
+
             }
         }
     }
+
 }
