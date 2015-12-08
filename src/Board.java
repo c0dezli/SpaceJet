@@ -65,9 +65,9 @@ public class Board extends JPanel implements Runnable, Settings {
 
     public void drawAliens(Graphics g) {
 
-        for (Iterator i = aliens.iterator(); i.hasNext(); ) {
+        for (int i=0; i<aliens.size(); i++) {
             //try {
-                Alien alien = (Alien) i.next();
+                Alien alien = (Alien) aliens.get(i);
 
                 if (alien.isVisible()) {
                     g.drawImage(alien.getImage(), alien.getX(), alien.getY(), this);
@@ -176,9 +176,9 @@ public class Board extends JPanel implements Runnable, Settings {
         player.move();
 
         // player's shot
-        for (Iterator i = shots.iterator(); i.hasNext();) {
+        for (int i=0; i<shots.size();i++) {
       //      try {
-                Shot shot = (Shot) i.next();
+                Shot shot = (Shot) shots.get(i);
                 if (shot.isVisible()) {
                     Iterator it = aliens.iterator();
                     int shotX = shot.getX();
