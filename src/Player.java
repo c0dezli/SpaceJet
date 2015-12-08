@@ -40,15 +40,15 @@ public class Player extends Sprite implements Settings{
         y += dy;
         if (x <= 2)
             x = 2;
-        if (x >= BOARD_WIDTH - 2*width)
-            x = BOARD_WIDTH - 2*width;
+        if (x >= BOARD_WIDTH - width)
+            x = BOARD_WIDTH - width;
         if (y <= 2)
             y = 2;
-        if (y >= GROUND - 2*height) {
-            y = GROUND - 2*height;
+        if (y >= GROUND - height) {
+            y = GROUND - height;
         }
-        if (y <= UPBOUND + 2*height) {
-            y = UPBOUND + 2*height;
+        if (y <= UPBOUND) {
+            y = UPBOUND;
         }
     }
 

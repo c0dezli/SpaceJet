@@ -114,7 +114,7 @@ public class Board extends JPanel implements Runnable, Settings {
 
     public void drawBombing(Graphics g) {
         Iterator i = aliens.iterator();
-        if (i.hasNext()) {
+        while (i.hasNext()) {
             Alien a = (Alien) i.next();
 
             Alien.Bomb b = a.getBomb();
@@ -274,7 +274,7 @@ public class Board extends JPanel implements Runnable, Settings {
             }
 
             if (!b.isDestroyed()) {
-                b.setY(b.getY() + 1);
+                b.setY(b.getY() + 2);
                 if (b.getY() >= GROUND - BOMB_HEIGHT) {
                     b.setDestroyed(true);
                 }
