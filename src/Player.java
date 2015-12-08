@@ -11,7 +11,7 @@ public class Player extends Sprite implements Settings{
     private final int START_Y = 770;
     private final int START_X = 270;
 
-    private final String player = "spacepix/player.png";
+    private final String player = "spacepix/player-1.png";
     private int width;
     private int height;
     private int HP;
