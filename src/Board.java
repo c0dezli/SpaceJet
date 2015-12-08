@@ -10,7 +10,7 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import java.util.*;
+
 
 public class Board extends JPanel implements Runnable, Settings {
 

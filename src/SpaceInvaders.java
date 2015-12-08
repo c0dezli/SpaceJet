@@ -17,7 +17,6 @@ public class SpaceInvaders extends JFrame implements Settings {
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
-
     }
 
     public static void updateGamesPlayed() {
