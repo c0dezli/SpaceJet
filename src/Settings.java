@@ -10,8 +10,8 @@ public interface Settings {
     int GROUND = 780;
     int UPBOUND = 20;
     int BOMB_HEIGHT = 5;
-    int ALIEN_HEIGHT = 22;
-    int ALIEN_WIDTH = 22;
+    int ALIEN_HEIGHT = 30;
+    int ALIEN_WIDTH = 31;
     int CHANCE = 5;
     int DELAY = 17;
     int PLAYER_WIDTH = 35;

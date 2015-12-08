@@ -8,8 +8,12 @@ import java.util.Random;
 public class Alien extends Sprite {
 
     private Bomb bomb;
-    private final String alien = "spacepix/alien.png";
-    private final String alien2 = "spacepix/alien2.png";
+    private final String alien = "spacepix/Layer 1.png";
+    private final String alien2 = "spacepix/Layer 2.png";
+    private final String alien3 = "spacepix/Layer 3.png";
+    private final String alien4 = "spacepix/Layer 4.png";
+    private final String alien5 = "spacepix/Layer 5.png";
+    private final String alien6 = "spacepix/Layer 6.png";
     private final String expl = "spacepix/explosion.png";
 
     public Alien() {
@@ -19,13 +23,34 @@ public class Alien extends Sprite {
         this.y = 20;
 
         // Draw the alien
-        if (gen.nextInt(10) % 2 == 0) {
-            ImageIcon icon = new ImageIcon(this.getClass().getResource(alien));
-            setImage(icon.getImage());
-        } else {
-            ImageIcon icon = new ImageIcon(this.getClass().getResource(alien2));
-            setImage(icon.getImage());
+        int key = gen.nextInt(6);
+        switch (key) {
+            case(1):{
+                ImageIcon icon = new ImageIcon(this.getClass().getResource(alien));
+                setImage(icon.getImage());
+                break;}
+            case(2):{
+                ImageIcon icon = new ImageIcon(this.getClass().getResource(alien2));
+                setImage(icon.getImage());
+                break;}
+            case(3):{
+                ImageIcon icon = new ImageIcon(this.getClass().getResource(alien3));
+                setImage(icon.getImage());
+                break;}
+            case(4):{
+                ImageIcon icon = new ImageIcon(this.getClass().getResource(alien4));
+                setImage(icon.getImage());
+                break;}
+            case(5):{
+                ImageIcon icon = new ImageIcon(this.getClass().getResource(alien5));
+                setImage(icon.getImage());
+                break;}
+            case(6):{
+                ImageIcon icon = new ImageIcon(this.getClass().getResource(alien6));
+                setImage(icon.getImage());
+                break;}
         }
+
         // Load the BOMB!
         bomb = new Bomb(this.x, this.y);
     }
