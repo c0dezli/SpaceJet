@@ -16,8 +16,6 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import java.util.*;
-
 
 public class Board extends JPanel implements Runnable, Settings {
 
@@ -70,7 +68,7 @@ public class Board extends JPanel implements Runnable, Settings {
 
     public void drawAliens(Graphics g) {
 
-        for (Iterator i = aliens.iterator(); i.hasNext();) {
+        for (Iterator i = aliens.iterator();i.hasNext();) {
             Alien alien = (Alien) i.next();
 
             if (alien.isVisible()) {
@@ -118,7 +116,8 @@ public class Board extends JPanel implements Runnable, Settings {
     }
 
     public void drawBombing(Graphics g) {
-        for (Iterator i = aliens.iterator();i.hasNext();) {
+        Iterator i = aliens.iterator();
+        if (i.hasNext()) {
             Alien a = (Alien) i.next();
 
             Alien.Bomb b = a.getBomb();
@@ -178,6 +177,7 @@ public class Board extends JPanel implements Runnable, Settings {
     public void animationCycle() {
         // player
         player.move();
+
         // player's shot
         for (Iterator i = shots.iterator(); i.hasNext();) {
             Shot shot = (Shot) i.next();
@@ -209,14 +209,7 @@ public class Board extends JPanel implements Runnable, Settings {
                     }
                 }
 
-                // shot move
-                int y = shot.getY();
-                y -= 4;
-
-                // if shot move to the upper bound, reset it
-                if (y < 0)
-                    shot.die();
-                else shot.setY(y);
+                shot.move();
             }
         }
 
@@ -225,6 +218,7 @@ public class Board extends JPanel implements Runnable, Settings {
 
         if((startTime - System.currentTimeMillis()) % 50 == 0) {
             Alien alien1 = new Alien();
+
             aliens.add(alien1);
         }
 
@@ -253,7 +247,6 @@ public class Board extends JPanel implements Runnable, Settings {
         }
 
         // aliens' bomb
-
         for (Iterator i = aliens.iterator(); i.hasNext();) {
             int shot = generator.nextInt(15);
             Alien a = (Alien) i.next();

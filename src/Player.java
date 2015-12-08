@@ -15,6 +15,7 @@ public class Player extends Sprite implements Settings{
     private int width;
     private int height;
     private int HP;
+    private int speed = 3;
 
     public Player(int HP) {
         ImageIcon icon = new ImageIcon(this.getClass().getResource(player));
@@ -51,26 +52,30 @@ public class Player extends Sprite implements Settings{
         }
     }
 
+    public void setSpeed(int new_speed) {
+        this.speed = new_speed;
+    }
+
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT)
         {
-            dx = -2;
+            dx = -this.speed;
         }
 
         if (key == KeyEvent.VK_RIGHT)
         {
-            dx = 2;
+            dx = this.speed;
         }
         if (key == KeyEvent.VK_UP)
         {
-            dy = -2;
+            dy = -this.speed;
         }
 
         if (key == KeyEvent.VK_DOWN)
         {
-            dy = 2;
+            dy = this.speed;
         }
     }
 
@@ -96,4 +101,5 @@ public class Player extends Sprite implements Settings{
             dy = 0;
         }
     }
+
 }
