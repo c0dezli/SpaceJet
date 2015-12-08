@@ -10,6 +10,7 @@ import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ConcurrentModificationException;
 import java.util.ArrayList;
@@ -66,17 +67,23 @@ public class Board extends JPanel implements Runnable, Settings {
     public void drawAliens(Graphics g) {
 
         for (int i=0; i<aliens.size(); i++) {
-            //try {
                 Alien alien = (Alien) aliens.get(i);
 
                 if (alien.isVisible()) {
+                    if(alien.getImage() == null){
+                        BufferedImage img_fix;
+                        BufferedImageLoader loader = new BufferedImageLoader();
+                        try {
+                            img_fix = loader.loadImage("spacepix/Layer 1.png");
+                            alien.setImage(img_fix);
+                        } catch (IOException e) {e.printStackTrace();}
+                    }
                     g.drawImage(alien.getImage(), alien.getX(), alien.getY(), this);
                 }
 
                 if (alien.isDying()) {
                     alien.die();
                 }
-            //} catch (ConcurrentModificationException e) {}
         }
     }
 
