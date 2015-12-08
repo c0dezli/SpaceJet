@@ -1,8 +1,14 @@
 /**
  * Created by SteveLeeLX on 11/28/15.
  */
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,6 +31,7 @@ public class Board extends JPanel implements Runnable, Settings {
     private boolean ingame = true;
     private String message = "Game Over";
     private final String expl = "spacepix/explosion.png";
+    final long startTime = System.currentTimeMillis();
     private Thread animator;
 
     public Board() {
@@ -91,27 +98,6 @@ public class Board extends JPanel implements Runnable, Settings {
         }
     }
 
-    public void drawMenu(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-        Font fnt0 = new Font("arial", Font.BOLD, 50);
-        g.setFont(fnt0);
-        g.setColor(Color.white);
-        g.drawString("Earth Protector", Board.WIDTH / 2 + 100, 110);
-
-        Font fnt1 = new Font("arial", Font.BOLD, 30);
-        g.setFont(fnt1);
-
-        Rectangle play = new Rectangle(Board.WIDTH /2 + 250, 250, 100, 45);
-        Rectangle score = new Rectangle(Board.WIDTH /2 + 250, 350, 100, 45);
-        Rectangle exit = new Rectangle(Board.WIDTH /2 + 250, 450, 100, 45);
-        g2d.draw(play);
-        g.drawString("Play", play.x + 19, play.y + 30);
-        g2d.draw(score);
-        g.drawString("Score", score.x + 19, score.y + 30);
-        g2d.draw(exit);
-        g.drawString("Exit", exit.x + 19, exit.y + 30);
-    }
-
     public void drawShot(Graphics g) {
         for (Iterator i = shots.iterator();i.hasNext();){
             Shot shot = (Shot) i.next();
@@ -154,11 +140,10 @@ public class Board extends JPanel implements Runnable, Settings {
             drawBombing(g);
             drawHeart(g);
             drawScore(g);
-            Toolkit.getDefaultToolkit().sync();
-            g.dispose();
-        } else {
-            drawMenu(g);
         }
+
+        Toolkit.getDefaultToolkit().sync();
+        g.dispose();
     }
 
     public void gameOver() {
@@ -305,6 +290,7 @@ public class Board extends JPanel implements Runnable, Settings {
         repaint();
 
         while (ingame) {
+            repaint();
             animationCycle();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
@@ -329,21 +315,16 @@ public class Board extends JPanel implements Runnable, Settings {
         }
 
         public void keyPressed(KeyEvent e) {
-            if (e.isShiftDown()){
-                ingame = true;
-            }
-            if (ingame){
-                player.keyPressed(e);
+            player.keyPressed(e);
 
-                int x = player.getX();
-                int y = player.getY();
-
+            int x = player.getX();
+            int y = player.getY();
+            if (ingame) {
                 if (e.isAltDown()) {
                     Shot shot = new Shot(x, y);
                     shots.add(shot);
 
                 }
-            } else {
 
             }
         }
