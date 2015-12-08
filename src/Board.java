@@ -1,6 +1,10 @@
 /**
  * Created by SteveLeeLX on 11/28/15.
  */
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -28,6 +32,7 @@ public class Board extends JPanel implements Runnable, Settings {
     private Player player;
     private HP hearts;
     private int direction = -1;
+    private BufferedImage background = null;
 
     private int score = 0;
     private boolean ingame = true;
@@ -41,8 +46,11 @@ public class Board extends JPanel implements Runnable, Settings {
         addKeyListener(new TAdapter());
         setFocusable(true);
         d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
-        setBackground(Color.black);
-
+        BufferedImageLoader loader = new BufferedImageLoader();
+        try{
+            background = loader.loadImage("spacepix/background.png");
+        }
+        catch(IOException e){e.printStackTrace();}
         gameInit();
         setDoubleBuffered(true);
     }
@@ -57,6 +65,7 @@ public class Board extends JPanel implements Runnable, Settings {
         player = new Player(PLAYER_HP);
         shots = new ArrayList();
         hearts = new HP(PLAYER_HEARTS);
+
 
         if (animator == null || !ingame) {
             animator = new Thread(this);
@@ -142,6 +151,7 @@ public class Board extends JPanel implements Runnable, Settings {
         g.fillRect(0, 0, d.width, d.height);
         g.setColor(Color.green);
         if (ingame) {
+            g.drawImage(background,0,0,null);
             g.drawLine(0, UPBOUND, BOARD_WIDTH, UPBOUND);
             g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
             drawAliens(g);

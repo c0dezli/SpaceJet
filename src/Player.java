@@ -21,7 +21,7 @@ public class Player extends Sprite implements Settings{
     public Player(int HP) {
         BufferedImageLoader loader = new BufferedImageLoader();
         try {
-            player = loader.loadImage("spacepix/player.png");
+            player = loader.loadImage("spacepix/player-1github.png");
             width = player.getWidth(null);
             height = player.getHeight(null);
             setImage(player);
