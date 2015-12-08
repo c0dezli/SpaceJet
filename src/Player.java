@@ -94,7 +94,7 @@ public class Player extends Sprite implements Settings {
         }
     }
 
-    public class Supply extends Sprite {
+    public class Supply {
 
         private final String heart = "spacepix/alien.png";
         private final String speed = "spacepix/alien2.png";

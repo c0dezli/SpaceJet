@@ -50,7 +50,7 @@ public class Board extends JPanel implements Runnable, Settings {
             background = loader.loadImage("spacepix/background.png");
         }
         catch(IOException e){e.printStackTrace();}
-        gameInit();
+          gameInit();
         setDoubleBuffered(true);
     }
 
