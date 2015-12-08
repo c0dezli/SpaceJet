@@ -10,6 +10,8 @@ import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import java.io.IOException;
+import java.util.ConcurrentModificationException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -24,15 +26,14 @@ public class Board extends JPanel implements Runnable, Settings {
     private ArrayList shots;
     private Player player;
     private HP hearts;
-
     private int direction = -1;
 
     private int score = 0;
     private boolean ingame = true;
     private String message = "Game Over";
     private final String expl = "spacepix/explosion.png";
-    final long startTime = System.currentTimeMillis();
     private Thread animator;
+    private Random generator = new Random();
 
     public Board() {
 
@@ -64,16 +65,18 @@ public class Board extends JPanel implements Runnable, Settings {
 
     public void drawAliens(Graphics g) {
 
-        for (Iterator i = aliens.iterator();i.hasNext();) {
-            Alien alien = (Alien) i.next();
+        for (Iterator i = aliens.iterator(); i.hasNext(); ) {
+            //try {
+                Alien alien = (Alien) i.next();
 
-            if (alien.isVisible()) {
-                g.drawImage(alien.getImage(), alien.getX(), alien.getY(), this);
-            }
+                if (alien.isVisible()) {
+                    g.drawImage(alien.getImage(), alien.getX(), alien.getY(), this);
+                }
 
-            if (alien.isDying()) {
-                alien.die();
-            }
+                if (alien.isDying()) {
+                    alien.die();
+                }
+            //} catch (ConcurrentModificationException e) {}
         }
     }
 
@@ -174,41 +177,39 @@ public class Board extends JPanel implements Runnable, Settings {
 
         // player's shot
         for (Iterator i = shots.iterator(); i.hasNext();) {
-            Shot shot = (Shot) i.next();
-            if (shot.isVisible()) {
-                Iterator it = aliens.iterator();
-                int shotX = shot.getX();
-                int shotY = shot.getY();
+      //      try {
+                Shot shot = (Shot) i.next();
+                if (shot.isVisible()) {
+                    Iterator it = aliens.iterator();
+                    int shotX = shot.getX();
+                    int shotY = shot.getY();
 
-                while (it.hasNext()) {
-                    Alien alien = (Alien) it.next();
-                    int alienX = alien.getX();
-                    int alienY = alien.getY();
+                    while (it.hasNext()) {
+                        Alien alien = (Alien) it.next();
+                        int alienX = alien.getX();
+                        int alienY = alien.getY();
 
-                    if (alien.isVisible() && shot.isVisible()) {
-                        // if you shot the alien
-                        if (shotX >= (alienX) &&
-                                shotX <= (alienX + ALIEN_WIDTH) &&
-                                shotY >= (alienY) &&
-                                shotY <= (alienY + ALIEN_HEIGHT)) {
-                            // kill the alien
-                            ImageIcon icon = new ImageIcon(getClass().getResource(expl));
-                            alien.setImage(icon.getImage());
-                            alien.setDying(true);
-                            // add score
-                            score += 100;
-                            // reset the player's shot
-                            shot.die();
+                        if (alien.isVisible()) {
+                            // if you shot the alien
+                            if (shotX >= (alienX) &&
+                                    shotX <= (alienX + ALIEN_WIDTH) &&
+                                    shotY >= (alienY) &&
+                                    shotY <= (alienY + ALIEN_HEIGHT)) {
+                                // kill the alien
+                                ImageIcon icon = new ImageIcon(getClass().getResource(expl));
+                                alien.setImage(icon.getImage());
+                                alien.setDying(true);
+                                // add score
+                                score += 100;
+                                // reset the player's shot
+                                shot.die();
+                            }
                         }
                     }
+                    shot.move();
                 }
-
-                shot.move();
-            }
+          //  } catch (ConcurrentModificationException e) {}
         }
-
-        // random generator for generate aliens and bombs
-        Random generator = new Random();
 
         if((System.currentTimeMillis()) % 50 == 0) {
             Alien alien1 = new Alien();
@@ -274,7 +275,7 @@ public class Board extends JPanel implements Runnable, Settings {
             }
 
             if (!b.isDestroyed()) {
-                b.setY(b.getY() + 2);
+                b.setY(b.getY() + 5);
                 if (b.getY() >= GROUND - BOMB_HEIGHT) {
                     b.setDestroyed(true);
                 }

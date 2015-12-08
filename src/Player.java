@@ -2,8 +2,8 @@
  * Created by SteveLeeLX on 11/28/15.
  */
 import java.awt.event.KeyEvent;
-
-import javax.swing.ImageIcon;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 
 public class Player extends Sprite implements Settings{
@@ -11,18 +11,25 @@ public class Player extends Sprite implements Settings{
     private final int START_Y = 770;
     private final int START_X = 270;
 
-    private final String player = "spacepix/player.png";
+    private BufferedImage player;
     private int width;
     private int height;
     private int HP;
     private int speed = 3;
 
+    //constructor
     public Player(int HP) {
-        ImageIcon icon = new ImageIcon(this.getClass().getResource(player));
-        width = icon.getImage().getWidth(null);
-        height = icon.getImage().getHeight(null);
+        BufferedImageLoader loader = new BufferedImageLoader();
+        try {
+            player = loader.loadImage("spacepix/player.png");
+            width = player.getWidth(null);
+            height = player.getHeight(null);
+            setImage(player);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         setHP(HP);
-        setImage(icon.getImage());
         setX(START_X);
         setY(START_Y);
     }
@@ -101,5 +108,27 @@ public class Player extends Sprite implements Settings{
             dy = 0;
         }
     }
+
+    public class Supply extends Sprite{
+
+        private final String heart = "spacepix/alien.png";
+        private final String speed = "spacepix/alien2.png";
+        private final String attack = "spacepix/explosion.png";
+
+        private boolean isHeart = false;
+        private boolean isSpeed = false;
+        private boolean isAttack = false;
+
+        public Supply() {
+
+        }
+
+        public void getHeart() {
+
+        }
+
+
+    }
+
 
 }

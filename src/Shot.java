@@ -1,19 +1,24 @@
 /**
  * Created by SteveLeeLX on 11/28/15.
  */
-import javax.swing.ImageIcon;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 
 public class Shot extends Sprite {
 
-    private String shot = "spacepix/shot.png";
+    private BufferedImage shot;
     private final int H_SPACE = 15;
     private final int V_SPACE = 10;
 
     public Shot(int x, int y) {
-
-        ImageIcon icon = new ImageIcon(this.getClass().getResource(shot));
-        setImage(icon.getImage());
+        BufferedImageLoader loader = new BufferedImageLoader();
+        try {
+            shot = loader.loadImage("spacepix/shot.png");
+            setImage(shot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         setX(x + H_SPACE);
         setY(y - V_SPACE);
     }
