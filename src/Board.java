@@ -30,7 +30,6 @@ public class Board extends JPanel implements Runnable, Settings {
     private ArrayList aliens;
     private ArrayList shots;
     private Player player;
-    private HP hearts;
     private int direction = -1;
     private BufferedImage background = null;
 
@@ -64,7 +63,6 @@ public class Board extends JPanel implements Runnable, Settings {
         aliens = new ArrayList();
         player = new Player(PLAYER_HP);
         shots = new ArrayList();
-        hearts = new HP(PLAYER_HEARTS);
 
 
         if (animator == null || !ingame) {
@@ -97,7 +95,8 @@ public class Board extends JPanel implements Runnable, Settings {
     }
 
     public void drawHeart(Graphics g) {
-        for (int i=0; i<=player.getHP();i++){
+        for (int i=0; i<=player.hp.getHP();i++){
+            Player.HP hearts = player.hp;
             g.drawImage(hearts.getImage(), hearts.getX()+(i*hearts.getWidth()), hearts.getY(), this);
         }
 
@@ -247,10 +246,10 @@ public class Board extends JPanel implements Runnable, Settings {
                     ImageIcon icon = new ImageIcon(getClass().getResource(expl));
                     alien.setImage(icon.getImage());
                     alien.setDying(true);
-                    if (player.getHP() == 0){
+                    if (player.hp.getHP() == 0){
                         player.setDying(true);
                     } else {
-                        player = new Player(player.getHP() - 1);
+                        player = new Player(player.hp.getHP() - 1);
                     }
                 }
 
@@ -282,10 +281,10 @@ public class Board extends JPanel implements Runnable, Settings {
                         bombY <= (playerY + PLAYER_HEIGHT)) {
                     ImageIcon icon = new ImageIcon(this.getClass().getResource(expl));
                     player.setImage(icon.getImage());
-                    if (player.getHP() == 0){
+                    if (player.hp.getHP() == 0){
                         player.setDying(true);
                     } else {
-                        player = new Player(player.getHP() - 1);
+                        player = new Player(player.hp.getHP() - 1);
                     }
                     b.setDestroyed(true);
                 }

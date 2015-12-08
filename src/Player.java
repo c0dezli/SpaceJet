@@ -1,12 +1,14 @@
 /**
  * Created by SteveLeeLX on 11/28/15.
  */
+
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 
-public class Player extends Sprite implements Settings{
+public class Player extends Sprite implements Settings {
 
     private final int START_Y = 770;
     private final int START_X = 270;
@@ -14,7 +16,7 @@ public class Player extends Sprite implements Settings{
     private BufferedImage player;
     private int width;
     private int height;
-    private int HP;
+    public HP hp;
     private int speed = 3;
 
     //constructor
@@ -28,18 +30,9 @@ public class Player extends Sprite implements Settings{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        setHP(HP);
+        hp = new HP(HP);
         setX(START_X);
         setY(START_Y);
-    }
-
-    public int getHP() {
-        return HP;
-    }
-
-    public void setHP(int n) {
-        HP = n;
     }
 
     public void move() {
@@ -66,22 +59,18 @@ public class Player extends Sprite implements Settings{
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_LEFT)
-        {
+        if (key == KeyEvent.VK_LEFT) {
             dx = -this.speed;
         }
 
-        if (key == KeyEvent.VK_RIGHT)
-        {
+        if (key == KeyEvent.VK_RIGHT) {
             dx = this.speed;
         }
-        if (key == KeyEvent.VK_UP)
-        {
+        if (key == KeyEvent.VK_UP) {
             dy = -this.speed;
         }
 
-        if (key == KeyEvent.VK_DOWN)
-        {
+        if (key == KeyEvent.VK_DOWN) {
             dy = this.speed;
         }
     }
@@ -89,27 +78,23 @@ public class Player extends Sprite implements Settings{
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_LEFT)
-        {
+        if (key == KeyEvent.VK_LEFT) {
             dx = 0;
         }
 
-        if (key == KeyEvent.VK_RIGHT)
-        {
+        if (key == KeyEvent.VK_RIGHT) {
             dx = 0;
         }
-        if (key == KeyEvent.VK_UP)
-        {
+        if (key == KeyEvent.VK_UP) {
             dy = 0;
         }
 
-        if (key == KeyEvent.VK_DOWN)
-        {
+        if (key == KeyEvent.VK_DOWN) {
             dy = 0;
         }
     }
 
-    public class Supply extends Sprite{
+    public class Supply extends Sprite {
 
         private final String heart = "spacepix/alien.png";
         private final String speed = "spacepix/alien2.png";
@@ -128,6 +113,40 @@ public class Player extends Sprite implements Settings{
         }
 
 
+    }
+
+    public class HP extends Sprite implements Settings {
+        private String hearts = "spacepix/Pixel_heart_icon.png";
+        private final int START_Y = 0;
+        private final int START_X = 0;
+
+        private int width;
+        private int HP;
+        private int x, y;
+
+        public HP(int HP) {
+            ImageIcon icon = new ImageIcon(this.getClass().getResource(hearts));
+            setImage(icon.getImage());
+            width = icon.getImage().getWidth(null);
+            x = START_X;
+            y = START_Y;
+            setHP(HP);
+            setImage(icon.getImage());
+            setX(x);
+            setY(y);
+        }
+
+        public int getHP() {
+            return HP;
+        }
+
+        public void setHP(int n) {
+            HP = n;
+        }
+
+        public int getWidth() {
+            return width;
+        }
     }
 
 
