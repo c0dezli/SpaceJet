@@ -71,7 +71,7 @@ public class Alien extends Sprite {
 
     public class Bomb extends Sprite {
 
-        private final String bomb = "spacepix/bomb.png";
+        private final String bomb = "spacepix/missle.png";
         private boolean destroyed;
 
         public Bomb(int x, int y) {
