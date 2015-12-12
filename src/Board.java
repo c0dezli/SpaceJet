@@ -39,6 +39,7 @@ public class Board extends JPanel implements Runnable, Settings {
     private final String expl = "spacepix/explosion.png";
     private Thread animator;
     private Random generator = new Random();
+    private int speed = 0;
 
     public Board() {
 
@@ -239,7 +240,6 @@ public class Board extends JPanel implements Runnable, Settings {
         for (Iterator i = aliens.iterator(); i.hasNext();) {
             Alien alien = (Alien) i.next();
             if (alien.isVisible()) {
-
                 int y = alien.getY();
 
                 if (y > GROUND - ALIEN_HEIGHT) {
@@ -252,8 +252,8 @@ public class Board extends JPanel implements Runnable, Settings {
                         player = new Player(player.hp.getHP() - 1);
                     }
                 }
-
-                alien.move(direction);
+                speed -= .01;
+                alien.move(direction + speed);
             }
         }
 
