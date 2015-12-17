@@ -33,6 +33,16 @@ public class Board extends JPanel implements Runnable, Settings {
     private BufferedImage background = null;
     private String message;
     private final String expl = "spacepix/explosion.png";
+    public Rectangle playButton = new Rectangle(BOARD_WIDTH / 2 + 120, 150, 100, 50);
+    public Rectangle helpButton = new Rectangle(BOARD_WIDTH / 2 + 120, 250, 100, 50);
+    public Rectangle quitButton = new Rectangle(BOARD_WIDTH / 2 + 120, 350, 100, 50);
+    public BufferedImage play;
+    public BufferedImage back;
+    public BufferedImage settings;
+    public BufferedImage help;
+    public BufferedImage quit;
+    public BufferedImage bgmbutton;
+    public Sound sound;
 
     // game state
     public enum STATE {
@@ -41,7 +51,7 @@ public class Board extends JPanel implements Runnable, Settings {
         score
     }
 
-    public static STATE state = STATE.score;
+    public static STATE state = STATE.menu;
 
     public Board() {
 
@@ -62,14 +72,6 @@ public class Board extends JPanel implements Runnable, Settings {
 
         gameInit();
     }
-
-//    public void getRank(String rank1, String rank2, String rank3, String rank4, String rank5){ // get the top5 ranking
-//        message1 = rank1;
-//        message2 = rank2;
-//        message3 = rank3;
-//        message4 = rank4;
-//        message5 = rank5;
-//    }
 
     public void gameInit() {
         speed = 0;
@@ -164,7 +166,7 @@ public class Board extends JPanel implements Runnable, Settings {
     public void paint(Graphics g) {
         super.paint(g);
 
-        g.setColor(Color.black);
+        g.setColor(Color.white);
         g.fillRect(0, 0, d.width, d.height);
 
         if (state == STATE.ingame) {
@@ -193,61 +195,44 @@ public class Board extends JPanel implements Runnable, Settings {
 
     public void showMenu(Graphics g){
 
-//        Graphics g = this.getGraphics();
-//
-//        Rectangle playButton = new Rectangle(BOARD_WIDTH / 2 + 120, 150, 100, 50);
-//        Rectangle helpButton = new Rectangle(BOARD_WIDTH / 2 + 120, 250, 100, 50);
-//        Rectangle quitButton = new Rectangle(BOARD_WIDTH / 2 + 120, 350, 100, 50);
-//        BufferedImage play;
-//        BufferedImage back;
-//        BufferedImage settings;
-//        BufferedImage help;
-//        BufferedImage quit;
-//        BufferedImage bgmbutton;
-//
-//
-//        BufferedImageLoader loader = new BufferedImageLoader();
-//
-//        //draw menu
-//        try {
-//            play = loader.loadImage("/Play.png");
-//            help = loader.loadImage("/Help.png");
-//            settings = loader.loadImage("/Settings.png");
-//            back = loader.loadImage("/Back.png");
-//            quit = loader.loadImage("/Quit.png");
-//            bgmbutton = loader.loadImage("/Sound-button-icon.png");
-//
-//            g.drawImage(play, 100, 160, null);
-//            g.drawImage(settings, 100, 230, null);
-//            g.drawImage(help, 100, 300, null);
-//            g.drawImage(quit, 100, 370, null);
-//
-//            g.drawImage(bgmbutton, 550, 400, null);
-//
-//            Font fnt = new Font("Curlz MT", Font.BOLD, 60);
-//            g.setFont(fnt);
-//            g.setColor(Color.white);
-//            g.drawString("Space Invaders", 70, 100);
-//
-//            Toolkit.getDefaultToolkit().sync();
-//            g.dispose();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
+        Graphics2D g2d=(Graphics2D) g;
 
-        g.setColor(new Color(0, 32, 48));
-        g.fillRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
+
+
+
+        BufferedImageLoader loader = new BufferedImageLoader();
+
+        //draw menu
+        try {
+            background = loader.loadImage("spacepix/background.png");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        g.drawImage(background, 0, 0, null);
+        Font small = new Font("Helvetica", Font.CENTER_BASELINE, 30);
         g.setColor(Color.white);
-        g.drawRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
-
-        Font small = new Font("Helvetica", Font.BOLD, 14);
-        FontMetrics metr = this.getFontMetrics(small);
-
         g.setFont(small);
-        g.drawString("Welcome to game, Press Alt to Start", (BOARD_WIDTH - metr.stringWidth(message)) / 2,
-                BOARD_WIDTH / 2);
+        g.setColor(Color.white);
+        g.drawRect(100, BOARD_WIDTH / 2 - 40, BOARD_WIDTH - 200, 50);
+        g.setColor(Color.white);
+        g.drawRect(100, BOARD_WIDTH / 2 + 110, BOARD_WIDTH - 200, 50);
+        g.setColor(Color.white);
+        g.drawRect(100, BOARD_WIDTH / 2 + 260, BOARD_WIDTH - 200, 50);
+
+        g.drawString("Press 'Alt' to Play", 170, 300);
+        g.drawString("Press 'Shift' to Score", 150, 450);
+        g.drawString("Press 'Ctrl' to Exit", 170, 600);
+
+        Font fnt = new Font("Arial", Font.BOLD, 60);
+        g.setFont(fnt);
+        g.setColor(new Color(0, 32, 48));
+        g.setColor(Color.white);
+        g.drawString("Space Invaders", 70, 100);
+
+        Toolkit.getDefaultToolkit().sync();
+        g.dispose();
     }
 
     public void showScore(Graphics g) {
@@ -589,7 +574,7 @@ public class Board extends JPanel implements Runnable, Settings {
             }
 
             if (!b.isDestroyed()) {
-                b.setY(b.getY() +3);
+                b.setY(b.getY() + 2);
                 if (b.getY() >= GROUND - BOMB_HEIGHT) {
                     b.setDestroyed(true);
                 }
@@ -636,13 +621,20 @@ public class Board extends JPanel implements Runnable, Settings {
                     state = STATE.ingame;
                     System.out.println(state);
                 }
+                else if (e.isShiftDown()){
+                    state = STATE.score;
+                    System.out.println(state);
+                }
+                else if (e.isControlDown()){
+                    System.exit(1);
+                }
             }
 
             if (state == STATE.score) {
-                gameInit();
+
                 if (e.isAltDown()) {
                     state = STATE.menu;
-                    System.out.println(state);
+                    gameInit();
                 }
             }
 
@@ -654,6 +646,7 @@ public class Board extends JPanel implements Runnable, Settings {
                 if (e.isAltDown()) {
                     Shot shot = new Shot(x, y);
                     shots.add(shot);
+                    sound.hit.play();
 
                 }
             }

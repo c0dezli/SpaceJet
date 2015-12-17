@@ -17,6 +17,7 @@ public class Alien extends Sprite {
     private BufferedImage alien5;
     private BufferedImage alien6;
     private BufferedImage expl;
+    public Sound sound;
 
 
     public Alien() {
