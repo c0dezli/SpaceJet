@@ -35,6 +35,7 @@ public class Board extends JPanel implements Runnable, Settings {
     private String message;
     private final String expl = "spacepix/explosion.png";
     public Sound sound;
+    public int count = 0;
 
     // game state
     public enum STATE {
@@ -336,7 +337,10 @@ public class Board extends JPanel implements Runnable, Settings {
         g.drawRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2 + 200, BOARD_WIDTH - 400, 50);
 
         String[][] topUser = ranking.getTopUser();
-        //ranking.insertUserName("Player1", score);
+        if (count == 0){
+            ranking.insertUserName("Player1", score);
+            count ++;
+        }
 
 
         Font small = new Font("Helvetica", Font.BOLD, 14);
@@ -625,6 +629,7 @@ public class Board extends JPanel implements Runnable, Settings {
                 else if (e.isControlDown()){
                     System.exit(1);
                 }
+                count = 0;
             }
 
             if (state == STATE.score) {
@@ -646,6 +651,7 @@ public class Board extends JPanel implements Runnable, Settings {
                     sound.hit.play();
 
                 }
+                count = 0;
             }
 
 
