@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 
 
 public class Player extends Sprite implements Settings {
@@ -98,18 +99,26 @@ public class Player extends Sprite implements Settings {
 
         private final String heart = "spacepix/alien.png";
         private final String speed = "spacepix/alien2.png";
-        private final String attack = "spacepix/explosion.png";
 
         private boolean isHeart = false;
         private boolean isSpeed = false;
-        private boolean isAttack = false;
 
         public Supply() {
-
+            Random gen = new Random();
+            int x = gen.nextInt(2);
+            if (x==1) {
+                this.isHeart = true;
+            } else {
+                this.isSpeed = true;
+            }
         }
 
-        public void getHeart() {
+        public void affect() {
+            if (this.isSpeed){
+            }
+            else if (this.isHeart){
 
+            }
         }
 
 

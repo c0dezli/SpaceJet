@@ -69,9 +69,6 @@ public class Menu extends JPanel implements Runnable, Settings{
     }
 
 
-
-
-
     public void run() {
         long beforeTime, timeDiff, sleep;
         beforeTime = System.currentTimeMillis();

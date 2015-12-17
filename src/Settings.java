@@ -17,5 +17,4 @@ public interface Settings {
     int PLAYER_WIDTH = 40;
     int PLAYER_HEIGHT = 29;
     int PLAYER_HP = 2;
-    int PLAYER_HEARTS = 3;
 }

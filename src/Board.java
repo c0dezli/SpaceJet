@@ -1,16 +1,11 @@
 /**
  * Created by SteveLeeLX on 11/28/15.
  */
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -26,20 +21,31 @@ import javax.swing.JPanel;
 
 public class Board extends JPanel implements Runnable, Settings {
 
+    // instance init
     private Dimension d;
     private ArrayList aliens;
     private ArrayList shots;
     private Player player;
+    private Thread animator;
+    private Random generator = new Random();
+
+    // init value
     private int direction = -1;
     private BufferedImage background = null;
-
+    private int speed = 0;
     private int score = 0;
     private boolean ingame = true;
     private String message = "Game Over";
     private final String expl = "spacepix/explosion.png";
-    private Thread animator;
-    private Random generator = new Random();
-    private int speed = 0;
+
+    // game state
+    public enum STATE {
+        menu,
+        ingame,
+        score
+    }
+
+    public static STATE state = STATE.menu;
 
     public Board() {
 
@@ -66,7 +72,7 @@ public class Board extends JPanel implements Runnable, Settings {
         shots = new ArrayList();
 
 
-        if (animator == null || !ingame) {
+        if (animator == null || !(state == STATE.ingame)) {
             animator = new Thread(this);
             animator.start();
         }
@@ -112,7 +118,7 @@ public class Board extends JPanel implements Runnable, Settings {
 
         if (player.isDying()) {
             player.die();
-            ingame = false;
+            state = STATE.score;
 
         }
     }
@@ -149,8 +155,8 @@ public class Board extends JPanel implements Runnable, Settings {
 
         g.setColor(Color.black);
         g.fillRect(0, 0, d.width, d.height);
-        g.setColor(Color.green);
-        if (ingame) {
+
+        if (state == STATE.ingame) {
             g.drawImage(background,0,0,null);
             g.drawLine(0, UPBOUND, BOARD_WIDTH, UPBOUND);
             g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
@@ -162,13 +168,79 @@ public class Board extends JPanel implements Runnable, Settings {
             drawScore(g);
         }
 
+        if (state == STATE.menu) {
+            showMenu(g);
+        }
+
+        if (state == STATE.score) {
+            showScore(g);
+        }
+
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
     }
 
-    public void gameOver() {
+    public void showMenu(Graphics g){
 
-        Graphics g = this.getGraphics();
+//        Graphics g = this.getGraphics();
+//
+//        Rectangle playButton = new Rectangle(BOARD_WIDTH / 2 + 120, 150, 100, 50);
+//        Rectangle helpButton = new Rectangle(BOARD_WIDTH / 2 + 120, 250, 100, 50);
+//        Rectangle quitButton = new Rectangle(BOARD_WIDTH / 2 + 120, 350, 100, 50);
+//        BufferedImage play;
+//        BufferedImage back;
+//        BufferedImage settings;
+//        BufferedImage help;
+//        BufferedImage quit;
+//        BufferedImage bgmbutton;
+//
+//
+//        BufferedImageLoader loader = new BufferedImageLoader();
+//
+//        //draw menu
+//        try {
+//            play = loader.loadImage("/Play.png");
+//            help = loader.loadImage("/Help.png");
+//            settings = loader.loadImage("/Settings.png");
+//            back = loader.loadImage("/Back.png");
+//            quit = loader.loadImage("/Quit.png");
+//            bgmbutton = loader.loadImage("/Sound-button-icon.png");
+//
+//            g.drawImage(play, 100, 160, null);
+//            g.drawImage(settings, 100, 230, null);
+//            g.drawImage(help, 100, 300, null);
+//            g.drawImage(quit, 100, 370, null);
+//
+//            g.drawImage(bgmbutton, 550, 400, null);
+//
+//            Font fnt = new Font("Curlz MT", Font.BOLD, 60);
+//            g.setFont(fnt);
+//            g.setColor(Color.white);
+//            g.drawString("Space Invaders", 70, 100);
+//
+//            Toolkit.getDefaultToolkit().sync();
+//            g.dispose();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
+
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
+        g.setColor(Color.white);
+        g.drawRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
+
+        Font small = new Font("Helvetica", Font.BOLD, 14);
+        FontMetrics metr = this.getFontMetrics(small);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        g.drawString("Press Alt to Start", (BOARD_WIDTH - metr.stringWidth(message)) / 2,
+                BOARD_WIDTH / 2);
+    }
+
+    public void showScore(Graphics g) {
 
         g.setColor(Color.black);
         g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
@@ -185,7 +257,6 @@ public class Board extends JPanel implements Runnable, Settings {
         g.setFont(small);
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2,
                 BOARD_WIDTH / 2);
-        // game reset
     }
 
     public void animationCycle() {
@@ -304,9 +375,9 @@ public class Board extends JPanel implements Runnable, Settings {
 
         beforeTime = System.currentTimeMillis();
 
-        repaint();
 
-        while (ingame) {
+
+        while (state == STATE.ingame) {
             repaint();
             animationCycle();
 
@@ -322,9 +393,25 @@ public class Board extends JPanel implements Runnable, Settings {
             }
             beforeTime = System.currentTimeMillis();
         }
-        gameOver();
+
+        while (state == STATE.menu || state == STATE.score) {
+            repaint();
+            timeDiff = System.currentTimeMillis() - beforeTime;
+            sleep = DELAY - timeDiff;
+
+            if (sleep < 0)
+                sleep = 2;
+            try {
+                Thread.sleep(sleep);
+            } catch (InterruptedException e) {
+                System.out.println("interrupted");
+            }
+            beforeTime = System.currentTimeMillis();
+        }
+
     }
 
+    // game control
     private class TAdapter extends KeyAdapter {
 
         public void keyReleased(KeyEvent e) {
@@ -332,19 +419,31 @@ public class Board extends JPanel implements Runnable, Settings {
         }
 
         public void keyPressed(KeyEvent e) {
-            player.keyPressed(e);
+            if (state == STATE.menu) {
+                if (e.isAltDown()) {
+                    state = STATE.ingame;
+                }
+            }
 
-            int x = player.getX();
-            int y = player.getY();
-            if (ingame) {
+            if (state == STATE.score) {
+                if (e.isAltDown()) {
+                    state = STATE.score;
+                }
+            }
+
+            if (state == STATE.ingame) {
+                player.keyPressed(e);
+
+                int x = player.getX();
+                int y = player.getY();
                 if (e.isAltDown()) {
                     Shot shot = new Shot(x, y);
                     shots.add(shot);
-
                 }
-
             }
+
+
         }
     }
-
 }
+
