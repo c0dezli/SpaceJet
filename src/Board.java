@@ -14,6 +14,7 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import java.lang.String;
 
 public class Board extends JPanel implements Runnable, Settings {
 
@@ -30,7 +31,7 @@ public class Board extends JPanel implements Runnable, Settings {
     // init value
     private int direction = -1;
     private BufferedImage background = null;
-    private String message = "Game Over";
+    private String message;
     private final String expl = "spacepix/explosion.png";
 
     // game state
@@ -40,7 +41,7 @@ public class Board extends JPanel implements Runnable, Settings {
         score
     }
 
-    public static STATE state = STATE.menu;
+    public static STATE state = STATE.score;
 
     public Board() {
 
@@ -61,6 +62,14 @@ public class Board extends JPanel implements Runnable, Settings {
 
         gameInit();
     }
+
+//    public void getRank(String rank1, String rank2, String rank3, String rank4, String rank5){ // get the top5 ranking
+//        message1 = rank1;
+//        message2 = rank2;
+//        message3 = rank3;
+//        message4 = rank4;
+//        message5 = rank5;
+//    }
 
     public void gameInit() {
         speed = 0;
@@ -133,6 +142,10 @@ public class Board extends JPanel implements Runnable, Settings {
 
     public void drawScore(Graphics g) {
         g.drawString("Score: "+ score, 100, 10);
+    }
+
+    public String toString(){
+        return "Your Score is: " + score;
     }
 
     public void drawBombing(Graphics g) {
@@ -242,18 +255,235 @@ public class Board extends JPanel implements Runnable, Settings {
         g.setColor(Color.black);
         g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
 
+        // Title
         g.setColor(new Color(0, 32, 48));
-        g.fillRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
+        g.fillRect(50, BOARD_WIDTH / 2 - 250, BOARD_WIDTH - 100, 50);
         g.setColor(Color.white);
-        g.drawRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
+        g.drawRect(50, BOARD_WIDTH / 2 - 250, BOARD_WIDTH - 100, 50);
+
+        // Row Title
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(50, BOARD_WIDTH / 2 - 50, BOARD_WIDTH - 500, 50);
+        g.setColor(Color.white);
+        g.drawRect(50, BOARD_WIDTH / 2 - 50, BOARD_WIDTH - 500, 50);
+
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(BOARD_WIDTH - 500 + 50, BOARD_WIDTH / 2 - 50, BOARD_WIDTH - 400, 50);
+        g.setColor(Color.white);
+        g.drawRect(BOARD_WIDTH - 500 + 50, BOARD_WIDTH / 2 - 50, BOARD_WIDTH - 400, 50);
+
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2 - 50, BOARD_WIDTH - 400, 50);
+        g.setColor(Color.white);
+        g.drawRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2 - 50, BOARD_WIDTH - 400, 50);
+
+        // Rank 1
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(50, BOARD_WIDTH / 2, BOARD_WIDTH - 500, 50);
+        g.setColor(Color.white);
+        g.drawRect(50, BOARD_WIDTH / 2, BOARD_WIDTH - 500, 50);
+
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(BOARD_WIDTH - 500 + 50, BOARD_WIDTH / 2, BOARD_WIDTH - 400, 50);
+        g.setColor(Color.white);
+        g.drawRect(BOARD_WIDTH - 500 + 50, BOARD_WIDTH / 2, BOARD_WIDTH - 400, 50);
+
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2, BOARD_WIDTH - 400, 50);
+        g.setColor(Color.white);
+        g.drawRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2, BOARD_WIDTH - 400, 50);
+
+        // Rank 2
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(50, BOARD_WIDTH / 2 + 50, BOARD_WIDTH - 500, 50);
+        g.setColor(Color.white);
+        g.drawRect(50, BOARD_WIDTH / 2 + 50, BOARD_WIDTH - 500, 50);
+
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(BOARD_WIDTH - 500 + 50, BOARD_WIDTH / 2 + 50, BOARD_WIDTH - 400, 50);
+        g.setColor(Color.white);
+        g.drawRect(BOARD_WIDTH - 500 + 50, BOARD_WIDTH / 2 + 50, BOARD_WIDTH - 400, 50);
+
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2 + 50, BOARD_WIDTH - 400, 50);
+        g.setColor(Color.white);
+        g.drawRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2 + 50, BOARD_WIDTH - 400, 50);
+
+        // Rank 3
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(50, BOARD_WIDTH / 2 + 100, BOARD_WIDTH - 500, 50);
+        g.setColor(Color.white);
+        g.drawRect(50, BOARD_WIDTH / 2 + 100, BOARD_WIDTH - 500, 50);
+
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(BOARD_WIDTH - 500 + 50, BOARD_WIDTH / 2 + 100, BOARD_WIDTH - 400, 50);
+        g.setColor(Color.white);
+        g.drawRect(BOARD_WIDTH - 500 + 50, BOARD_WIDTH / 2 + 100, BOARD_WIDTH - 400, 50);
+
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2 + 100, BOARD_WIDTH - 400, 50);
+        g.setColor(Color.white);
+        g.drawRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2 + 100, BOARD_WIDTH - 400, 50);
+
+        // Rank 4
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(50, BOARD_WIDTH / 2 + 150, BOARD_WIDTH - 500, 50);
+        g.setColor(Color.white);
+        g.drawRect(50, BOARD_WIDTH / 2 + 150, BOARD_WIDTH - 500, 50);
+
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(BOARD_WIDTH - 500 + 50, BOARD_WIDTH / 2 + 150, BOARD_WIDTH - 400, 50);
+        g.setColor(Color.white);
+        g.drawRect(BOARD_WIDTH - 500 + 50, BOARD_WIDTH / 2 + 150, BOARD_WIDTH - 400, 50);
+
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2 + 150, BOARD_WIDTH - 400, 50);
+        g.setColor(Color.white);
+        g.drawRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2 + 150, BOARD_WIDTH - 400, 50);
+
+
+        // Rank 5
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(50, BOARD_WIDTH / 2 + 200, BOARD_WIDTH - 500, 50);
+        g.setColor(Color.white);
+        g.drawRect(50, BOARD_WIDTH / 2 + 200, BOARD_WIDTH - 500, 50);
+
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(BOARD_WIDTH - 500 + 50, BOARD_WIDTH / 2 + 200, BOARD_WIDTH - 400, 50);
+        g.setColor(Color.white);
+        g.drawRect(BOARD_WIDTH - 500 + 50, BOARD_WIDTH / 2 + 200, BOARD_WIDTH - 400, 50);
+
+        g.setColor(new Color(0, 32, 48));
+        g.fillRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2 + 200, BOARD_WIDTH - 400, 50);
+        g.setColor(Color.white);
+        g.drawRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2 + 200, BOARD_WIDTH - 400, 50);
 
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
 
         g.setColor(Color.white);
         g.setFont(small);
+        message = "Game Over";
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2,
-                BOARD_WIDTH / 2);
+                BOARD_WIDTH / 2 - 220);
+
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "Your Score is " + score;
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2,
+                BOARD_WIDTH / 2 - 120);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        g.drawString("Ranking", (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 180,
+                BOARD_WIDTH / 2 - 20);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        g.drawString("Name", (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 30,
+                BOARD_WIDTH / 2 - 20);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        g.drawString("High Scores", (BOARD_WIDTH - metr.stringWidth(message)) / 2 + 145,
+                BOARD_WIDTH / 2 - 20);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "Rank1";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 190,
+                BOARD_WIDTH / 2 + 30);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "Name";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 40,
+                BOARD_WIDTH / 2 + 30);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "High Scores";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 + 145,
+                BOARD_WIDTH / 2 + 30);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "Rank2";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 190,
+                BOARD_WIDTH / 2 + 80);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "Name";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 40,
+                BOARD_WIDTH / 2 + 80);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "High Scores";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 + 145,
+                BOARD_WIDTH / 2 + 80);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "Rank3";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 190,
+                BOARD_WIDTH / 2 + 130);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "Name";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 40,
+                BOARD_WIDTH / 2 + 130);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "High Scores";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 + 145,
+                BOARD_WIDTH / 2 + 130);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "Rank4";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 190,
+                BOARD_WIDTH / 2 + 180);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "Name";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 40,
+                BOARD_WIDTH / 2 + 180);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "High Scores";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 + 145,
+                BOARD_WIDTH / 2 + 180);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "Rank5";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 190,
+                BOARD_WIDTH / 2 + 230);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "Name";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 40,
+                BOARD_WIDTH / 2 + 230);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "High Scores";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 + 145,
+                BOARD_WIDTH / 2 + 230);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        message = "Press Key \'Alt\' back to main.";
+        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2,
+                BOARD_WIDTH / 2 + 330);
     }
 
     public void animationCycle() {
