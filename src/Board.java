@@ -27,21 +27,13 @@ public class Board extends JPanel implements Runnable, Settings {
     private Random generator = new Random();
     private int speed;
     private int score;
+    private Ranking ranking = new Ranking();
 
     // init value
     private int direction = -1;
     private BufferedImage background = null;
     private String message;
     private final String expl = "spacepix/explosion.png";
-    public Rectangle playButton = new Rectangle(BOARD_WIDTH / 2 + 120, 150, 100, 50);
-    public Rectangle helpButton = new Rectangle(BOARD_WIDTH / 2 + 120, 250, 100, 50);
-    public Rectangle quitButton = new Rectangle(BOARD_WIDTH / 2 + 120, 350, 100, 50);
-    public BufferedImage play;
-    public BufferedImage back;
-    public BufferedImage settings;
-    public BufferedImage help;
-    public BufferedImage quit;
-    public BufferedImage bgmbutton;
     public Sound sound;
 
     // game state
@@ -343,6 +335,10 @@ public class Board extends JPanel implements Runnable, Settings {
         g.setColor(Color.white);
         g.drawRect(BOARD_WIDTH - 300 + 50, BOARD_WIDTH / 2 + 200, BOARD_WIDTH - 400, 50);
 
+        String[][] topUser = ranking.getTopUser();
+        //ranking.insertUserName("Player1", score);
+
+
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
 
@@ -376,91 +372,91 @@ public class Board extends JPanel implements Runnable, Settings {
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "Rank1";
+        message = "No.1";
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 190,
                 BOARD_WIDTH / 2 + 30);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "Name";
+        message = "Player1";
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 40,
                 BOARD_WIDTH / 2 + 30);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "High Scores";
+        message = topUser[0][1];
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 + 145,
                 BOARD_WIDTH / 2 + 30);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "Rank2";
+        message = "No.2";
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 190,
                 BOARD_WIDTH / 2 + 80);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "Name";
+        message = "Player2";
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 40,
                 BOARD_WIDTH / 2 + 80);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "High Scores";
+        message = topUser[1][1];
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 + 145,
                 BOARD_WIDTH / 2 + 80);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "Rank3";
+        message = "Np.3";
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 190,
                 BOARD_WIDTH / 2 + 130);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "Name";
+        message = "Player3";
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 40,
                 BOARD_WIDTH / 2 + 130);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "High Scores";
+        message = topUser[2][1];
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 + 145,
                 BOARD_WIDTH / 2 + 130);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "Rank4";
+        message = "No.4";
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 190,
                 BOARD_WIDTH / 2 + 180);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "Name";
+        message = "Player4";
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 40,
                 BOARD_WIDTH / 2 + 180);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "High Scores";
+        message = topUser[3][1];
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 + 145,
                 BOARD_WIDTH / 2 + 180);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "Rank5";
+        message = "No.5";
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 190,
                 BOARD_WIDTH / 2 + 230);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "Name";
+        message = "Player5";
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 - 40,
                 BOARD_WIDTH / 2 + 230);
 
         g.setColor(Color.white);
         g.setFont(small);
-        message = "High Scores";
+        message = topUser[4][1];
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2 + 145,
                 BOARD_WIDTH / 2 + 230);
 
@@ -604,6 +600,7 @@ public class Board extends JPanel implements Runnable, Settings {
             }
             beforeTime = System.currentTimeMillis();
         }
+
     }
 
     // game control
