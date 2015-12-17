@@ -5,13 +5,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ConcurrentModificationException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -28,13 +24,12 @@ public class Board extends JPanel implements Runnable, Settings {
     private Player player;
     private Thread animator;
     private Random generator = new Random();
+    private int speed;
+    private int score;
 
     // init value
     private int direction = -1;
     private BufferedImage background = null;
-    private int speed = 0;
-    private int score = 0;
-    private boolean ingame = true;
     private String message = "Game Over";
     private final String expl = "spacepix/explosion.png";
 
@@ -56,23 +51,26 @@ public class Board extends JPanel implements Runnable, Settings {
         try{
             background = loader.loadImage("spacepix/background.png");
         }
-        catch(IOException e){e.printStackTrace();}
-          gameInit();
+        catch(IOException e) {e.printStackTrace();}
+        gameInit();
         setDoubleBuffered(true);
     }
 
     public void addNotify() {
         super.addNotify();
+
         gameInit();
     }
 
     public void gameInit() {
+        speed = 0;
+        score = 0;
         aliens = new ArrayList();
         player = new Player(PLAYER_HP);
         shots = new ArrayList();
 
 
-        if (animator == null || !(state == STATE.ingame)) {
+        if (animator == null) {
             animator = new Thread(this);
             animator.start();
         }
@@ -168,11 +166,11 @@ public class Board extends JPanel implements Runnable, Settings {
             drawScore(g);
         }
 
-        if (state == STATE.menu) {
+        else if (state == STATE.menu) {
             showMenu(g);
         }
 
-        if (state == STATE.score) {
+        else {
             showScore(g);
         }
 
@@ -234,9 +232,8 @@ public class Board extends JPanel implements Runnable, Settings {
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
 
-        g.setColor(Color.white);
         g.setFont(small);
-        g.drawString("Press Alt to Start", (BOARD_WIDTH - metr.stringWidth(message)) / 2,
+        g.drawString("Welcome to game, Press Alt to Start", (BOARD_WIDTH - metr.stringWidth(message)) / 2,
                 BOARD_WIDTH / 2);
     }
 
@@ -362,7 +359,7 @@ public class Board extends JPanel implements Runnable, Settings {
             }
 
             if (!b.isDestroyed()) {
-                b.setY(b.getY() + 5);
+                b.setY(b.getY() +3);
                 if (b.getY() >= GROUND - BOMB_HEIGHT) {
                     b.setDestroyed(true);
                 }
@@ -375,11 +372,10 @@ public class Board extends JPanel implements Runnable, Settings {
 
         beforeTime = System.currentTimeMillis();
 
-
-
-        while (state == STATE.ingame) {
+        while (true) {
             repaint();
-            animationCycle();
+            if (state == STATE.ingame)
+                animationCycle();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = DELAY - timeDiff;
@@ -393,41 +389,30 @@ public class Board extends JPanel implements Runnable, Settings {
             }
             beforeTime = System.currentTimeMillis();
         }
-
-        while (state == STATE.menu || state == STATE.score) {
-            repaint();
-            timeDiff = System.currentTimeMillis() - beforeTime;
-            sleep = DELAY - timeDiff;
-
-            if (sleep < 0)
-                sleep = 2;
-            try {
-                Thread.sleep(sleep);
-            } catch (InterruptedException e) {
-                System.out.println("interrupted");
-            }
-            beforeTime = System.currentTimeMillis();
-        }
-
     }
 
     // game control
     private class TAdapter extends KeyAdapter {
 
         public void keyReleased(KeyEvent e) {
-            player.keyReleased(e);
+            if(state == STATE.ingame)
+                player.keyReleased(e);
         }
 
         public void keyPressed(KeyEvent e) {
+
             if (state == STATE.menu) {
                 if (e.isAltDown()) {
                     state = STATE.ingame;
+                    System.out.println(state);
                 }
             }
 
             if (state == STATE.score) {
+                gameInit();
                 if (e.isAltDown()) {
-                    state = STATE.score;
+                    state = STATE.menu;
+                    System.out.println(state);
                 }
             }
 
@@ -439,6 +424,7 @@ public class Board extends JPanel implements Runnable, Settings {
                 if (e.isAltDown()) {
                     Shot shot = new Shot(x, y);
                     shots.add(shot);
+
                 }
             }
 
