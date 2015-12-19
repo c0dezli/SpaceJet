@@ -22,10 +22,10 @@ public class Board extends JPanel implements Runnable, Settings {
     private Dimension d;
     private ArrayList aliens;
     private ArrayList shots;
+    private ArrayList supplies;
     private Player player;
     private Thread animator;
     private Random generator = new Random();
-    private int speed;
     private int score;
     private Ranking ranking = new Ranking();
 
@@ -68,9 +68,9 @@ public class Board extends JPanel implements Runnable, Settings {
     }
 
     public void gameInit() {
-        speed = 0;
         score = 0;
         aliens = new ArrayList();
+        supplies = new ArrayList();
         player = new Player(PLAYER_HP);
         shots = new ArrayList();
 
@@ -140,8 +140,18 @@ public class Board extends JPanel implements Runnable, Settings {
         g.drawString("Score: "+ score, 100, 10);
     }
 
-    public String toString(){
-        return "Your Score is: " + score;
+    public void drawSupply(Graphics g) {
+        for (int i=0; i<supplies.size(); i++) {
+            Supply supply = (Supply) supplies.get(i);
+
+            if (supply.isVisible()) {
+                g.drawImage(supply.getImage(), supply.getX(), supply.getY(), this);
+            }
+
+            if (supply.isDying()) {
+                supply.die();
+            }
+        }
     }
 
     public void drawBombing(Graphics g) {
@@ -173,6 +183,7 @@ public class Board extends JPanel implements Runnable, Settings {
             drawBombing(g);
             drawHeart(g);
             drawScore(g);
+            drawSupply(g);
         }
 
         else if (state == STATE.menu) {
@@ -185,6 +196,10 @@ public class Board extends JPanel implements Runnable, Settings {
 
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
+    }
+
+    public String toString(){
+        return "Your Score is: " + score;
     }
 
     public void showMenu(Graphics g){
@@ -478,44 +493,50 @@ public class Board extends JPanel implements Runnable, Settings {
 
         // player's shot
         for (int i=0; i<shots.size();i++) {
-      //      try {
-                Shot shot = (Shot) shots.get(i);
-                if (shot.isVisible()) {
-                    Iterator it = aliens.iterator();
-                    int shotX = shot.getX();
-                    int shotY = shot.getY();
+            Shot shot = (Shot) shots.get(i);
+            if (shot.isVisible()) {
+                Iterator it = aliens.iterator();
+                int shotX = shot.getX();
+                int shotY = shot.getY();
 
-                    while (it.hasNext()) {
-                        Alien alien = (Alien) it.next();
-                        int alienX = alien.getX();
-                        int alienY = alien.getY();
+                while (it.hasNext()) {
+                    Alien alien = (Alien) it.next();
+                    int alienX = alien.getX();
+                    int alienY = alien.getY();
 
-                        if (alien.isVisible()) {
-                            // if you shot the alien
-                            if (shotX >= (alienX) &&
-                                    shotX <= (alienX + ALIEN_WIDTH) &&
-                                    shotY >= (alienY) &&
-                                    shotY <= (alienY + ALIEN_HEIGHT)) {
-                                // kill the alien
-                                ImageIcon icon = new ImageIcon(getClass().getResource(expl));
-                                alien.setImage(icon.getImage());
-                                alien.setDying(true);
-                                // add score
-                                score += 100;
-                                // reset the player's shot
-                                shot.die();
-                            }
+                    if (alien.isVisible()) {
+                        // if you shot the alien
+                        if (shotX >= (alienX) &&
+                                shotX <= (alienX + ALIEN_WIDTH) &&
+                                shotY >= (alienY) &&
+                                shotY <= (alienY + ALIEN_HEIGHT)) {
+                            // kill the alien
+                            ImageIcon icon = new ImageIcon(getClass().getResource(expl));
+                            alien.setImage(icon.getImage());
+                            alien.setDying(true);
+                            // add score
+                            score += 100;
+                            // reset the player's shot
+                            shot.die();
                         }
                     }
-                    shot.move();
                 }
-          //  } catch (ConcurrentModificationException e) {}
+                shot.move();
+            }
         }
 
+
+
+        // generate aliens and supplies
         if((System.currentTimeMillis()) % 50 == 0) {
             Alien alien1 = new Alien();
-
             aliens.add(alien1);
+            // generate random key
+            Random gen = new Random();
+            if (gen.nextInt(10) == 1) {
+                Supply supply1 = new Supply();
+                supplies.add(supply1);
+            }
         }
 
 
@@ -536,8 +557,7 @@ public class Board extends JPanel implements Runnable, Settings {
                         player = new Player(player.hp.getHP() - 1);
                     }
                 }
-                speed -= .01;
-                alien.move(direction + speed);
+                alien.move(direction);
             }
         }
 
@@ -575,12 +595,46 @@ public class Board extends JPanel implements Runnable, Settings {
             }
 
             if (!b.isDestroyed()) {
-                b.setY(b.getY() + 2);
+                b.setY(b.getY() + 3);
                 if (b.getY() >= GROUND - BOMB_HEIGHT) {
                     b.setDestroyed(true);
                 }
             }
         }
+
+
+
+
+        // check if supplies reach the ground
+        for (Iterator i = supplies.iterator(); i.hasNext();) {
+            Supply supply = (Supply) i.next();
+            if (supply.isVisible()) {
+                int supplyY = supply.getY();
+                int supplyX = supply.getX();
+                int playerX = player.getX();
+                int playerY = player.getY();
+
+                if (supplyY > GROUND - ALIEN_HEIGHT) {
+                    supply.setDying(true);
+                } else if (supplyX >= (playerX) &&
+                        supplyX <= (playerX + PLAYER_WIDTH) &&
+                        supplyY >= (playerY) &&
+                        supplyY <= (playerY + PLAYER_HEIGHT)) {
+                    if (supply.isHeart) {
+                        int new_hp = player.hp.getHP() + 1;
+                        player.setHP(new_hp);
+                    } else {
+                        player.speed += 1;
+                    }
+                    supply.setDying(true);
+                }
+
+
+
+                supply.move(direction);
+            }
+        }
+
     }
 
     public void run() {

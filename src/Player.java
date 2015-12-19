@@ -18,7 +18,7 @@ public class Player extends Sprite implements Settings {
     private int width;
     private int height;
     public HP hp;
-    private int speed = 3;
+    public int speed = 4;
 
     //constructor
     public Player(int HP) {
@@ -56,6 +56,8 @@ public class Player extends Sprite implements Settings {
     public void setSpeed(int new_speed) {
         this.speed = new_speed;
     }
+
+    public void setHP(int new_hp) { this.hp = new HP(new_hp); }
 
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
@@ -95,34 +97,7 @@ public class Player extends Sprite implements Settings {
         }
     }
 
-    public class Supply {
 
-        private final String heart = "spacepix/alien.png";
-        private final String speed = "spacepix/alien2.png";
-
-        private boolean isHeart = false;
-        private boolean isSpeed = false;
-
-        public Supply() {
-            Random gen = new Random();
-            int x = gen.nextInt(2);
-            if (x==1) {
-                this.isHeart = true;
-            } else {
-                this.isSpeed = true;
-            }
-        }
-
-        public void affect() {
-            if (this.isSpeed){
-            }
-            else if (this.isHeart){
-
-            }
-        }
-
-
-    }
 
     public class HP extends Sprite implements Settings {
         private String hearts = "spacepix/Pixel_heart_icon.png";
