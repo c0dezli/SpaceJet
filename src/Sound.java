@@ -6,6 +6,7 @@ public class Sound {
 
     public static Sound hit = new Sound("spacepix/shot.wav");
     public static Sound BGM = new Sound("spacepix/POL-time-attack-long.wav");
+    public static Sound expl = new Sound("spacepix/explosion.wav");
 
     public Sound (String fileName) {
         try {

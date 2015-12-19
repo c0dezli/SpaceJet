@@ -100,6 +100,7 @@ public class Board extends JPanel implements Runnable, Settings {
 
                 if (alien.isDying()) {
                     alien.die();
+                    sound.expl.play();
                 }
         }
     }
@@ -121,6 +122,8 @@ public class Board extends JPanel implements Runnable, Settings {
 
         if (player.isDying()) {
             player.die();
+            sound.expl.play();
+            sound.BGM.stop();
             state = STATE.score;
 
         }
@@ -674,10 +677,12 @@ public class Board extends JPanel implements Runnable, Settings {
 
             if (state == STATE.menu) {
                 if (e.isAltDown()) {
+                    sound.BGM.play();
                     state = STATE.ingame;
                     System.out.println(state);
                 }
                 else if (e.isShiftDown()){
+                    sound.BGM.stop();
                     state = STATE.score;
                     System.out.println(state);
                 }
@@ -689,6 +694,7 @@ public class Board extends JPanel implements Runnable, Settings {
 
             if (state == STATE.score) {
                 if (e.isAltDown()) {
+                    sound.BGM.play();
                     state = STATE.menu;
                     gameInit();
                 }
