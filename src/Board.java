@@ -58,6 +58,7 @@ public class Board extends JPanel implements Runnable, Settings {
         catch(IOException e) {e.printStackTrace();}
         gameInit();
         setDoubleBuffered(true);
+        sound.BGM.play();
     }
 
     public void addNotify() {
@@ -222,7 +223,7 @@ public class Board extends JPanel implements Runnable, Settings {
         g.setFont(fnt);
         g.setColor(new Color(0, 32, 48));
         g.setColor(Color.white);
-        g.drawString("Space Invaders", 70, 100);
+        g.drawString("Space War", 150, 100);
 
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
@@ -633,7 +634,6 @@ public class Board extends JPanel implements Runnable, Settings {
             }
 
             if (state == STATE.score) {
-
                 if (e.isAltDown()) {
                     state = STATE.menu;
                     gameInit();
@@ -642,7 +642,6 @@ public class Board extends JPanel implements Runnable, Settings {
 
             if (state == STATE.ingame) {
                 player.keyPressed(e);
-
                 int x = player.getX();
                 int y = player.getY();
                 if (e.isAltDown()) {

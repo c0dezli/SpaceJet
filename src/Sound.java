@@ -5,7 +5,7 @@ public class Sound {
     private Clip clip;
 
     public static Sound hit = new Sound("spacepix/shot.wav");
-    public static Sound hitten = new Sound("spacepix/explosion.wav");
+    public static Sound BGM = new Sound("spacepix/POL-time-attack-long.wav");
 
     public Sound (String fileName) {
         try {
