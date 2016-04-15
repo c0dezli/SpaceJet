@@ -100,7 +100,6 @@ public class Board extends JPanel implements Runnable, Settings {
 
                 if (alien.isDying()) {
                     alien.die();
-                    sound.expl.play();
                 }
         }
     }
